@@ -292,7 +292,7 @@ function escribirFinal(texto) {
     end.style.color = "#00ff66";
     end.style.textShadow = "0 0 10px #00ff66";
     end.style.whiteSpace = "nowrap";
-    end.style.zIndex = "9999"; // aseguramos que quede arriba de todo
+    end.style.zIndex = "50"; // aseguramos que quede arriba de todo
 
     document.body.appendChild(end);
 
@@ -342,7 +342,7 @@ function crearPalabra(texto) {
             const typing = document.getElementById("typing");
             if (typing) typing.style.display = "none";
 
-            escribirFinal("CodeInMind>The End...");
+            escribirFinal("The End");
         }
 
         word.classList.add("hit");
