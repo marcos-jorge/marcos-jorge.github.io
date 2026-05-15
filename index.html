@@ -17,6 +17,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
 
         .screen {
@@ -29,6 +30,7 @@
             box-shadow: 0 0 20px #00ff66;
             position: relative;
             overflow: hidden;
+            z-index: 2;
         }
 
         pre {
@@ -75,10 +77,48 @@
             font-size: 0.9rem;
             color: #00ff66;
             opacity: 0.7;
+            z-index: 2;
+        }
+
+        /* Palabras flotantes */
+        .floating-word {
+            position: absolute;
+            color: #00ff66;
+            font-size: 1.1rem;
+            opacity: 0.35;
+            text-shadow: 0 0 8px #00ff66;
+            pointer-events: none;
+            z-index: 1;
+            animation: float 12s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate3d(40vw, -20vh, 0) rotate(90deg);
+            }
+            50% {
+                transform: translate3d(-20vw, 30vh, 0) rotate(180deg);
+            }
+            75% {
+                transform: translate3d(30vw, 10vh, 0) rotate(270deg);
+            }
+            100% {
+                transform: translate3d(0, 0, 0) rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Palabras flotantes -->
+    <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">genexus</span>
+    <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">html</span>
+    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">css</span>
+    <span class="floating-word" style="bottom:15%; left:60%; animation-duration:20s;">javascript</span>
+    <span class="floating-word" style="top:50%; right:25%; animation-duration:22s;">python</span>
 
     <div class="screen scanline">
         <pre id="console" class="glow"></pre>
@@ -96,3 +136,40 @@
             "CPU: CodeInMind Virtual Core @ 4.20 GHz",
             "Memory Test: 65536K OK",
             "Detecting drives...",
+            "SATA0: CODEINMIND_SSD_1TB",
+            "SATA1: CODEINMIND_BACKUP_512GB",
+            "",
+            "Loading CodeInMind OS...",
+            ""
+        ];
+
+        const asciiLogo = [
+"   ██████╗  ██████╗ ██████╗ ███████╗██╗███╗   ██╗███╗   ███╗██╗███╗   ██╗██████╗ ",
+"   ██╔══██╗██╔═══██╗██╔══██╗██╔════╝██║████╗  ██║████╗ ████║██║████╗  ██║██╔══██╗",
+"   ██████╔╝██║   ██║██████╔╝█████╗  ██║██╔██╗ ██║██╔████╔██║██║██╔██╗ ██║██████╔╝",
+"   ██╔══██╗██║   ██║██╔══██╗██╔══╝  ██║██║╚██╗██║██║╚██╔╝██║██║██║╚██╗██║██╔══██╗",
+"   ██║  ██║╚██████╔╝██║  ██║███████╗██║██║ ╚████║██║ ╚═╝ ██║██║██║ ╚████║██████╔╝",
+"   ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═════╝ ",
+"",
+"                             Initializing CodeInMind Shell..."
+        ];
+
+        const promptText = "CodeInMind>";
+        let audioCtx = null;
+
+        function playKeySound() {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "square";
+                osc.frequency.value = 900 + Math.random() * 300;
+                gain.gain.value = 0.03;
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                setTimeout(() => {
+                    osc.stop();
+                }, 25);
