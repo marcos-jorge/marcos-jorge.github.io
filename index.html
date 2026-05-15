@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeInMind</title>
+    <title>CodeInMind Game</title>
 
     <style>
         body {
@@ -12,27 +12,23 @@
             font-family: "Fira Code", monospace;
             margin: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             overflow: hidden;
-            position: relative;
             cursor: none;
+            position: relative;
         }
 
-        /* SCORE */
-        #score {
+        #score, #timer {
             position: absolute;
             top: 20px;
-            left: 20px;
             font-size: 2rem;
             color: #00ff66;
             text-shadow: 0 0 10px #00ff66;
             z-index: 10;
         }
 
-        /* MIRA */
+        #score { left: 20px; }
+        #timer { right: 20px; }
+
         #mira {
             position: fixed;
             width: 40px;
@@ -45,25 +41,25 @@
             z-index: 9999;
         }
 
-        #mira::after {
+        #mira::after, #mira::before {
             content: "";
             position: absolute;
-            top: 50%;
-            left: 50%;
+            background: #00ff66;
+        }
+
+        #mira::after {
             width: 2px;
             height: 20px;
-            background: #00ff66;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
         }
 
         #mira::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
             width: 20px;
             height: 2px;
-            background: #00ff66;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
         }
 
@@ -73,6 +69,7 @@
             white-space: nowrap;
             z-index: 5;
             position: relative;
+            margin-top: 20vh;
         }
 
         .cursor {
@@ -89,38 +86,17 @@
             50% { opacity: 1; }
         }
 
-        footer {
-            position: absolute;
-            bottom: 20px;
-            font-size: 1rem;
-            color: #00ff66;
-            opacity: 0.7;
-            z-index: 5;
-        }
-
-        /* PALABRAS FLOTANTES */
         .floating-word {
             position: absolute;
-            color: #00ff66;
             font-size: 2.2rem;
-            opacity: 0.35;
-            text-shadow: 0 0 12px #00ff66;
-            pointer-events: auto;
-            animation: float 12s linear infinite;
             font-weight: bold;
+            opacity: 0.7;
+            text-shadow: 0 0 12px currentColor;
+            pointer-events: auto;
             user-select: none;
             z-index: 3;
         }
 
-        @keyframes float {
-            0% { transform: translate(0,0) rotate(0deg); }
-            25% { transform: translate(40vw,-20vh) rotate(90deg); }
-            50% { transform: translate(-20vw,30vh) rotate(180deg); }
-            75% { transform: translate(30vw,10vh) rotate(270deg); }
-            100% { transform: translate(0,0) rotate(360deg); }
-        }
-
-        /* EFECTO DE IMPACTO */
         .hit {
             animation: hitEffect 0.3s forwards;
         }
@@ -133,124 +109,153 @@
 </head>
 <body>
 
-    <!-- SCORE -->
     <div id="score">SCORE: 0</div>
-
-    <!-- MIRA -->
+    <div id="timer">TIME: 0.0s</div>
     <div id="mira"></div>
-
-    <!-- PALABRAS FLOTANTES -->
-    <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">GENEXUS</span>
-    <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">HTML</span>
-    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">CSS</span>
-    <span class="floating-word" style="bottom:15%; left:60%; animation-duration:20s;">JAVASCRIPT</span>
-    <span class="floating-word" style="top:50%; right:25%; animation-duration:22s;">PYTHON</span>
-
-    <span class="floating-word" style="top:30%; left:40%; animation-duration:19s;">SQL</span>
-    <span class="floating-word" style="bottom:25%; right:15%; animation-duration:17s;">C#</span>
-    <span class="floating-word" style="top:60%; left:70%; animation-duration:21s;">JAVA</span>
-
-    <!-- TEXTO PRINCIPAL -->
     <h1 id="typing"></h1>
 
-    <footer>Created by Marcos and Bruno Varela</footer>
+<script>
+/* ------------------------------
+   CODEINMIND TYPING
+------------------------------ */
+const texto = "CodeInMind>";
+let i = 0;
 
-    <script>
-        /* ESCRITURA */
-        const texto = "CodeInMind>";
-        let i = 0;
+function escribir() {
+    const el = document.getElementById("typing");
 
-        function escribir() {
-            const el = document.getElementById("typing");
+    if (i < texto.length) {
+        el.textContent += texto.charAt(i);
+        i++;
+        setTimeout(escribir, 150);
+    } else {
+        const cursor = document.createElement("span");
+        cursor.className = "cursor";
+        el.appendChild(cursor);
+    }
+}
+escribir();
 
-            if (i < texto.length) {
-                el.textContent += texto.charAt(i);
-                i++;
-                setTimeout(escribir, 150);
-            } else {
-                const cursor = document.createElement("span");
-                cursor.className = "cursor";
-                el.appendChild(cursor);
-            }
+/* ------------------------------
+   MIRA
+------------------------------ */
+const mira = document.getElementById("mira");
+document.addEventListener("mousemove", e => {
+    mira.style.left = e.clientX + "px";
+    mira.style.top = e.clientY + "px";
+});
+
+/* ------------------------------
+   AUDIO
+------------------------------ */
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function playShot() {
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "square";
+    osc.frequency.value = 350;
+    gain.gain.value = 0.25;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    setTimeout(() => osc.stop(), 80);
+}
+
+function playHit() {
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.value = 120;
+    gain.gain.value = 0.3;
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    setTimeout(() => osc.stop(), 120);
+}
+
+/* ------------------------------
+   SCORE + TIMER
+------------------------------ */
+let score = 0;
+const scoreEl = document.getElementById("score");
+
+let time = 0;
+let timerRunning = true;
+const timerEl = document.getElementById("timer");
+
+setInterval(() => {
+    if (timerRunning) {
+        time += 0.1;
+        timerEl.textContent = "TIME: " + time.toFixed(1) + "s";
+    }
+}, 100);
+
+/* ------------------------------
+   LENGUAJES
+------------------------------ */
+const lenguajes = [
+    "GENEXUS","HTML","CSS","JAVASCRIPT","PYTHON","SQL","C#","JAVA",
+    "RUST","GO","KOTLIN","SWIFT","TYPESCRIPT","DART","PHP","R","RUBY",
+    "PERL","SCALA","HASKELL","ELIXIR","C","C++","BASIC","COBOL","FORTRAN",
+    "PASCAL","LISP","PROLOG","ZIG","NIM","CRYSTAL","SOLIDITY","MOVE","WASM",
+    "REACT","VUE","ANGULAR","NEXTJS","NODEJS","SASS","LESS","MATLAB","JULIA"
+];
+
+/* ------------------------------
+   CREAR TODAS LAS PALABRAS UNA VEZ
+------------------------------ */
+let palabrasRestantes = lenguajes.length;
+
+function crearPalabra(texto) {
+    const word = document.createElement("span");
+    word.className = "floating-word";
+    word.textContent = texto;
+
+    const colores = ["#00ff66","#00eaff","#ff00ff","#ff0066","#ffaa00","#00ffcc"];
+    word.style.color = colores[Math.floor(Math.random() * colores.length)];
+
+    word.style.top = Math.random() * 80 + "%";
+    word.style.left = Math.random() * 80 + "%";
+
+    const dur = 10 + Math.random() * 15;
+    word.style.animation = `float ${dur}s linear infinite`;
+
+    word.addEventListener("click", e => {
+        e.stopPropagation();
+        playHit();
+        score++;
+        scoreEl.textContent = "SCORE: " + score;
+
+        palabrasRestantes--;
+        if (palabrasRestantes === 0) {
+            timerRunning = false;
         }
-        escribir();
 
-        /* MOVER LA MIRA */
-        const mira = document.getElementById("mira");
-        document.addEventListener("mousemove", e => {
-            mira.style.left = e.clientX + "px";
-            mira.style.top = e.clientY + "px";
-        });
+        word.classList.add("hit");
+        setTimeout(() => word.remove(), 300);
+    });
 
-        /* SCORE */
-        let score = 0;
-        const scoreEl = document.getElementById("score");
+    document.body.appendChild(word);
+}
 
-        /* AUDIO */
-        let audioCtx = null;
+lenguajes.forEach(l => crearPalabra(l));
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        /* SONIDO DE DISPARO (siempre) */
-        function playShot() {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = "square";
-            osc.frequency.value = 350;
-
-            gain.gain.value = 0.25;
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start();
-            setTimeout(() => osc.stop(), 80);
-        }
-
-        /* SONIDO DE IMPACTO (solo si aciertas) */
-        function playHit() {
-            initAudio();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = "sawtooth";
-            osc.frequency.value = 120;
-
-            gain.gain.value = 0.3;
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start();
-            setTimeout(() => osc.stop(), 120);
-        }
-
-        /* DISPARO GLOBAL */
-        document.addEventListener("click", () => {
-            playShot();
-        });
-
-        /* DISPARAR A LAS PALABRAS */
-        document.querySelectorAll(".floating-word").forEach(word => {
-            word.addEventListener("click", (e) => {
-                e.stopPropagation(); // evita doble sonido
-
-                playHit(); // sonido de impacto
-
-                score++;
-                scoreEl.textContent = "SCORE: " + score;
-
-                word.classList.add("hit");
-                setTimeout(() => word.remove(), 300);
-            });
-        });
-    </script>
+/* ------------------------------
+   SONIDO DE DISPARO GLOBAL
+------------------------------ */
+document.addEventListener("click", () => {
+    playShot();
+});
+</script>
 
 </body>
 </html>
