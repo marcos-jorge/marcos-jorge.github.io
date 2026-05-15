@@ -18,7 +18,18 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            cursor: none; /* Ocultamos el cursor */
+            cursor: none;
+        }
+
+        /* SCORE */
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            color: #00ff66;
+            text-shadow: 0 0 10px #00ff66;
+            z-index: 10;
         }
 
         /* MIRA */
@@ -122,6 +133,9 @@
 </head>
 <body>
 
+    <!-- SCORE -->
+    <div id="score">SCORE: 0</div>
+
     <!-- MIRA -->
     <div id="mira"></div>
 
@@ -168,9 +182,16 @@
             mira.style.top = e.clientY + "px";
         });
 
+        /* SCORE */
+        let score = 0;
+        const scoreEl = document.getElementById("score");
+
         /* DISPARAR A LAS PALABRAS */
         document.querySelectorAll(".floating-word").forEach(word => {
             word.addEventListener("click", () => {
+                score++;
+                scoreEl.textContent = "SCORE: " + score;
+
                 word.classList.add("hit");
                 setTimeout(() => word.remove(), 300);
             });
