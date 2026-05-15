@@ -307,23 +307,10 @@ function crearPalabra(texto) {
 
         palabrasRestantes--;
 
-        // CUANDO GANAS
+        // CUANDO GANAS → escribir final letra por letra
         if (palabrasRestantes === 0) {
             timerRunning = false;
-
-            const win = document.createElement("h1");
-            win.textContent = "CodeInMind>you win!";
-            win.style.position = "absolute";
-            win.style.top = "50%";
-            win.style.left = "50%";
-            win.style.transform = "translate(-50%, -50%)";
-            win.style.fontSize = "3.5rem";
-            win.style.color = "#00ff66";
-            win.style.textShadow = "0 0 10px #00ff66";
-            win.style.whiteSpace = "nowrap";
-            win.style.zIndex = "50";
-
-            document.body.appendChild(win);
+            escribirFinal("CodeInMind>The End...");
         }
 
         word.classList.add("hit");
