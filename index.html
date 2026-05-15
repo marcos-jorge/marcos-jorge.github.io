@@ -18,12 +18,12 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-            cursor: none; /* Ocultamos el cursor normal */
+            cursor: none; /* Ocultamos el cursor */
         }
 
-        /* MIRA DEL RATÓN */
+        /* MIRA */
         #mira {
-            position: absolute;
+            position: fixed;
             width: 40px;
             height: 40px;
             border: 2px solid #00ff66;
@@ -31,6 +31,7 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             box-shadow: 0 0 10px #00ff66;
+            z-index: 9999;
         }
 
         #mira::after {
@@ -59,7 +60,8 @@
             font-size: 3.5rem;
             text-shadow: 0 0 10px #00ff66;
             white-space: nowrap;
-            z-index: 2;
+            z-index: 5;
+            position: relative;
         }
 
         .cursor {
@@ -82,20 +84,21 @@
             font-size: 1rem;
             color: #00ff66;
             opacity: 0.7;
-            z-index: 2;
+            z-index: 5;
         }
 
-        /* Palabras flotantes MÁS GRANDES */
+        /* PALABRAS FLOTANTES */
         .floating-word {
             position: absolute;
             color: #00ff66;
-            font-size: 2rem;
+            font-size: 2.2rem;
             opacity: 0.35;
             text-shadow: 0 0 12px #00ff66;
             pointer-events: auto;
             animation: float 12s linear infinite;
             font-weight: bold;
             user-select: none;
+            z-index: 3;
         }
 
         @keyframes float {
@@ -122,7 +125,7 @@
     <!-- MIRA -->
     <div id="mira"></div>
 
-    <!-- Palabras flotantes -->
+    <!-- PALABRAS FLOTANTES -->
     <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">GENEXUS</span>
     <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">HTML</span>
     <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">CSS</span>
@@ -133,12 +136,13 @@
     <span class="floating-word" style="bottom:25%; right:15%; animation-duration:17s;">C#</span>
     <span class="floating-word" style="top:60%; left:70%; animation-duration:21s;">JAVA</span>
 
+    <!-- TEXTO PRINCIPAL -->
     <h1 id="typing"></h1>
 
     <footer>Created by Marcos and Bruno Varela</footer>
 
     <script>
-        /* ESCRITURA DE CODEINMIND> */
+        /* ESCRITURA */
         const texto = "CodeInMind>";
         let i = 0;
 
