@@ -21,17 +21,17 @@
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             text-shadow: 0 0 10px #00ff66;
             white-space: nowrap;
         }
 
         .cursor {
             display: inline-block;
-            width: 12px;
-            height: 2rem;
+            width: 14px;
+            height: 2.2rem;
             background: #00ff66;
-            margin-left: 4px;
+            margin-left: 6px;
             animation: blink 0.7s infinite;
         }
 
@@ -43,20 +43,21 @@
         footer {
             position: absolute;
             bottom: 20px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #00ff66;
             opacity: 0.7;
         }
 
-        /* Palabras flotantes */
+        /* Palabras flotantes MÁS GRANDES */
         .floating-word {
             position: absolute;
             color: #00ff66;
-            font-size: 1.2rem;
+            font-size: 2rem; /* ← AUMENTADO */
             opacity: 0.35;
-            text-shadow: 0 0 8px #00ff66;
+            text-shadow: 0 0 12px #00ff66;
             pointer-events: none;
             animation: float 12s linear infinite;
+            font-weight: bold;
         }
 
         @keyframes float {
@@ -70,12 +71,14 @@
 </head>
 <body>
 
-    <!-- Palabras flotantes -->
-    <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">genexus</span>
-    <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">html</span>
-    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">css</span>
-    <span class="floating-word" style="bottom:15%; left:60%; animation-duration:20s;">javascript</span>
-    <span class="floating-word" style="top:50%; right:25%; animation-duration:22s;">python</span>
+    <!-- Palabras flotantes en MAYÚSCULAS y MÁS GRANDES -->
+    <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">GENEXUS</span>
+    <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">HTML</span>
+    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">CSS</span>
+    <span class="floating-word" style="bottom:15%; left:60%; animation-duration:20s;">JAVASCRIPT</span>
+    <span class="floating-word" style="top:50%; right:25%; animation-duration:22s;">PYTHON</span>
+    <span class="floating-word" style="top:30%; left:40%; animation-duration:19s;">SQL</span>
+    <span class="floating-word" style="bottom:25%; right:15%; animation-duration:17s;">C#</span>
 
     <h1 id="typing"></h1>
 
