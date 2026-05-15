@@ -282,6 +282,33 @@ const lenguajes = [
 
 let palabrasRestantes = lenguajes.length;
 
+function escribirFinal(texto) {
+    const end = document.createElement("h1");
+    end.style.position = "absolute";
+    end.style.top = "50%";
+    end.style.left = "50%";
+    end.style.transform = "translate(-50%, -50%)";
+    end.style.fontSize = "3.5rem";
+    end.style.color = "#00ff66";
+    end.style.textShadow = "0 0 10px #00ff66";
+    end.style.whiteSpace = "nowrap";
+    end.style.zIndex = "9999"; // aseguramos que quede arriba de todo
+
+    document.body.appendChild(end);
+
+    let i = 0;
+
+    function escribirLetra() {
+        if (i < texto.length) {
+            end.textContent += texto.charAt(i);
+            i++;
+            setTimeout(escribirLetra, 150); // misma velocidad que el inicio
+        }
+    }
+
+    escribirLetra();
+}
+
 /* ------------------------------
    CREAR PALABRAS (solo después de go)
 ------------------------------ */
@@ -307,9 +334,14 @@ function crearPalabra(texto) {
 
         palabrasRestantes--;
 
-        // CUANDO GANAS → escribir final letra por letra
+        // 🟩 CUANDO GANAS → escribir final letra por letra
         if (palabrasRestantes === 0) {
             timerRunning = false;
+
+            // Ocultar cualquier texto previo
+            const typing = document.getElementById("typing");
+            if (typing) typing.style.display = "none";
+
             escribirFinal("CodeInMind>The End...");
         }
 
