@@ -100,7 +100,7 @@
             animation-iteration-count: infinite;
         }
 
-        /* ANIMACIÓN QUE FALTABA */
+        /* ANIMACIÓN */
         @keyframes float {
             0% { transform: translate(0,0) rotate(0deg); }
             25% { transform: translate(40vw,-20vh) rotate(90deg); }
@@ -117,6 +117,19 @@
             0% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(2); }
         }
+
+        /* FOOTER */
+        #creditos {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: #00ff66;
+            opacity: 0.8;
+            text-shadow: 0 0 10px #00ff66;
+            z-index: 20;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +138,8 @@
     <div id="timer">TIME: 0.0s</div>
     <div id="mira"></div>
     <h1 id="typing"></h1>
+
+    <footer id="creditos">Created by Marcos and Bruno Varela</footer>
 
 <script>
 /* ------------------------------
