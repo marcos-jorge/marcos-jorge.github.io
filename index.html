@@ -17,6 +17,7 @@
             position: relative;
         }
 
+        /* SCORE Y TIEMPO */
         #score, #timer {
             position: absolute;
             top: 20px;
@@ -25,10 +26,10 @@
             text-shadow: 0 0 10px #00ff66;
             z-index: 10;
         }
-
         #score { left: 20px; }
         #timer { right: 20px; }
 
+        /* MIRA */
         #mira {
             position: fixed;
             width: 40px;
@@ -40,13 +41,11 @@
             box-shadow: 0 0 10px #00ff66;
             z-index: 9999;
         }
-
         #mira::after, #mira::before {
             content: "";
             position: absolute;
             background: #00ff66;
         }
-
         #mira::after {
             width: 2px;
             height: 20px;
@@ -54,7 +53,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-
         #mira::before {
             width: 20px;
             height: 2px;
@@ -63,13 +61,16 @@
             transform: translate(-50%, -50%);
         }
 
-        h1 {
+        /* CODEINMIND CENTRADO */
+        #typing {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 3.5rem;
             text-shadow: 0 0 10px #00ff66;
             white-space: nowrap;
             z-index: 5;
-            position: relative;
-            margin-top: 20vh;
         }
 
         .cursor {
@@ -80,12 +81,12 @@
             margin-left: 6px;
             animation: blink 0.7s infinite;
         }
-
         @keyframes blink {
             0%, 100% { opacity: 0; }
             50% { opacity: 1; }
         }
 
+        /* PALABRAS FLOTANTES */
         .floating-word {
             position: absolute;
             font-size: 2.2rem;
@@ -95,12 +96,23 @@
             pointer-events: auto;
             user-select: none;
             z-index: 3;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
         }
 
+        /* ANIMACIÓN QUE FALTABA */
+        @keyframes float {
+            0% { transform: translate(0,0) rotate(0deg); }
+            25% { transform: translate(40vw,-20vh) rotate(90deg); }
+            50% { transform: translate(-20vw,30vh) rotate(180deg); }
+            75% { transform: translate(30vw,10vh) rotate(270deg); }
+            100% { transform: translate(0,0) rotate(360deg); }
+        }
+
+        /* IMPACTO */
         .hit {
             animation: hitEffect 0.3s forwards;
         }
-
         @keyframes hitEffect {
             0% { opacity: 1; transform: scale(1); }
             100% { opacity: 0; transform: scale(2); }
@@ -149,11 +161,8 @@ document.addEventListener("mousemove", e => {
    AUDIO
 ------------------------------ */
 let audioCtx = null;
-
 function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 }
 
 function playShot() {
@@ -186,10 +195,10 @@ function playHit() {
    SCORE + TIMER
 ------------------------------ */
 let score = 0;
-const scoreEl = document.getElementById("score");
-
 let time = 0;
 let timerRunning = true;
+
+const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
 
 setInterval(() => {
@@ -210,11 +219,11 @@ const lenguajes = [
     "REACT","VUE","ANGULAR","NEXTJS","NODEJS","SASS","LESS","MATLAB","JULIA"
 ];
 
-/* ------------------------------
-   CREAR TODAS LAS PALABRAS UNA VEZ
------------------------------- */
 let palabrasRestantes = lenguajes.length;
 
+/* ------------------------------
+   CREAR PALABRAS UNA SOLA VEZ
+------------------------------ */
 function crearPalabra(texto) {
     const word = document.createElement("span");
     word.className = "floating-word";
@@ -236,9 +245,7 @@ function crearPalabra(texto) {
         scoreEl.textContent = "SCORE: " + score;
 
         palabrasRestantes--;
-        if (palabrasRestantes === 0) {
-            timerRunning = false;
-        }
+        if (palabrasRestantes === 0) timerRunning = false;
 
         word.classList.add("hit");
         setTimeout(() => word.remove(), 300);
@@ -252,9 +259,7 @@ lenguajes.forEach(l => crearPalabra(l));
 /* ------------------------------
    SONIDO DE DISPARO GLOBAL
 ------------------------------ */
-document.addEventListener("click", () => {
-    playShot();
-});
+document.addEventListener("click", () => playShot());
 </script>
 
 </body>
