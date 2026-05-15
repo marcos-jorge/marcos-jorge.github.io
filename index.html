@@ -18,12 +18,48 @@
             align-items: center;
             overflow: hidden;
             position: relative;
+            cursor: none; /* Ocultamos el cursor normal */
+        }
+
+        /* MIRA DEL RATÓN */
+        #mira {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #00ff66;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px #00ff66;
+        }
+
+        #mira::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: #00ff66;
+            transform: translate(-50%, -50%);
+        }
+
+        #mira::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 2px;
+            background: #00ff66;
+            transform: translate(-50%, -50%);
         }
 
         h1 {
             font-size: 3.5rem;
             text-shadow: 0 0 10px #00ff66;
             white-space: nowrap;
+            z-index: 2;
         }
 
         .cursor {
@@ -46,18 +82,20 @@
             font-size: 1rem;
             color: #00ff66;
             opacity: 0.7;
+            z-index: 2;
         }
 
         /* Palabras flotantes MÁS GRANDES */
         .floating-word {
             position: absolute;
             color: #00ff66;
-            font-size: 2rem; /* ← AUMENTADO */
+            font-size: 2rem;
             opacity: 0.35;
             text-shadow: 0 0 12px #00ff66;
-            pointer-events: none;
+            pointer-events: auto;
             animation: float 12s linear infinite;
             font-weight: bold;
+            user-select: none;
         }
 
         @keyframes float {
@@ -67,43 +105,24 @@
             75% { transform: translate(30vw,10vh) rotate(270deg); }
             100% { transform: translate(0,0) rotate(360deg); }
         }
+
+        /* EFECTO DE IMPACTO */
+        .hit {
+            animation: hitEffect 0.3s forwards;
+        }
+
+        @keyframes hitEffect {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(2); }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Palabras flotantes en MAYÚSCULAS y MÁS GRANDES -->
+    <!-- MIRA -->
+    <div id="mira"></div>
+
+    <!-- Palabras flotantes -->
     <span class="floating-word" style="top:10%; left:5%; animation-duration:14s;">GENEXUS</span>
     <span class="floating-word" style="top:70%; left:15%; animation-duration:18s;">HTML</span>
-    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">CSS</span>
-    <span class="floating-word" style="bottom:15%; left:60%; animation-duration:20s;">JAVASCRIPT</span>
-    <span class="floating-word" style="top:50%; right:25%; animation-duration:22s;">PYTHON</span>
-    <span class="floating-word" style="top:30%; left:40%; animation-duration:19s;">SQL</span>
-    <span class="floating-word" style="bottom:25%; right:15%; animation-duration:17s;">C#</span>
-
-    <h1 id="typing"></h1>
-
-    <footer>Created by Marcos and Bruno Varela</footer>
-
-    <script>
-        const texto = "CodeInMind>";
-        let i = 0;
-
-        function escribir() {
-            const el = document.getElementById("typing");
-
-            if (i < texto.length) {
-                el.textContent += texto.charAt(i);
-                i++;
-                setTimeout(escribir, 150);
-            } else {
-                const cursor = document.createElement("span");
-                cursor.className = "cursor";
-                el.appendChild(cursor);
-            }
-        }
-
-        escribir();
-    </script>
-
-</body>
-</html>
+    <span class="floating-word" style="top:20%; right:10%; animation-duration:16s;">
