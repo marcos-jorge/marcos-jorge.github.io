@@ -11,6 +11,7 @@
             color: #00e0c6;
             font-family: "Inter", sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -24,6 +25,7 @@
             border-right: 3px solid #00e0c6;
             padding-right: 10px;
             animation: blink 0.7s infinite;
+            margin-bottom: 40px;
         }
 
         @keyframes blink {
@@ -31,11 +33,21 @@
             50% { border-color: #00e0c6; }
             100% { border-color: transparent; }
         }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 1rem;
+            color: #00e0c6;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
 
     <h1 id="titulo"></h1>
+
+    <footer>Created by Marcos and Bruno Varela</footer>
 
     <script>
         const texto = "CodeInMind>";
@@ -45,7 +57,7 @@
             if (i < texto.length) {
                 document.getElementById("titulo").textContent += texto.charAt(i);
                 i++;
-                setTimeout(escribir, 150); // velocidad de escritura
+                setTimeout(escribir, 150);
             }
         }
 
