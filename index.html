@@ -186,7 +186,7 @@
         let score = 0;
         const scoreEl = document.getElementById("score");
 
-        /* AUDIO CONTEXT */
+        /* AUDIO */
         let audioCtx = null;
 
         function initAudio() {
@@ -195,16 +195,16 @@
             }
         }
 
-        /* SONIDO DE DISPARO */
+        /* SONIDO DE DISPARO (siempre) */
         function playShot() {
             initAudio();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
             osc.type = "square";
-            osc.frequency.value = 300;
+            osc.frequency.value = 350;
 
-            gain.gain.value = 0.2;
+            gain.gain.value = 0.25;
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
@@ -213,7 +213,7 @@
             setTimeout(() => osc.stop(), 80);
         }
 
-        /* SONIDO DE IMPACTO */
+        /* SONIDO DE IMPACTO (solo si aciertas) */
         function playHit() {
             initAudio();
             const osc = audioCtx.createOscillator();
@@ -222,7 +222,7 @@
             osc.type = "sawtooth";
             osc.frequency.value = 120;
 
-            gain.gain.value = 0.25;
+            gain.gain.value = 0.3;
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
@@ -231,13 +231,17 @@
             setTimeout(() => osc.stop(), 120);
         }
 
+        /* DISPARO GLOBAL */
+        document.addEventListener("click", () => {
+            playShot();
+        });
+
         /* DISPARAR A LAS PALABRAS */
         document.querySelectorAll(".floating-word").forEach(word => {
-            word.addEventListener("click", () => {
+            word.addEventListener("click", (e) => {
+                e.stopPropagation(); // evita doble sonido
 
-                playShot(); // sonido de disparo
-
-                setTimeout(() => playHit(), 80); // sonido de impacto
+                playHit(); // sonido de impacto
 
                 score++;
                 scoreEl.textContent = "SCORE: " + score;
