@@ -148,10 +148,10 @@ function escribir() {
     if (i < texto.length) {
         el.textContent += texto.charAt(i);
         i++;
-        setTimeout(escribir, 1500);
+        setTimeout(escribir, 150); // ← velocidad del typing (NO SE TOCA)
     } else {
-        typingDone = true;
-        startGame(); // ← AQUÍ EMPIEZA EL JUEGO
+        // ← Espera antes de que aparezcan las palabras
+        setTimeout(startGame, 1500); // 1500 ms = 1.5 segundos
     }
 }
 escribir();
@@ -253,7 +253,25 @@ function crearPalabra(texto) {
         scoreEl.textContent = "SCORE: " + score;
 
         palabrasRestantes--;
-        if (palabrasRestantes === 0) timerRunning = false;
+
+        // CUANDO GANAS
+        if (palabrasRestantes === 0) {
+            timerRunning = false;
+
+            const win = document.createElement("h1");
+            win.textContent = "CodeInMind>you win!";
+            win.style.position = "absolute";
+            win.style.top = "50%";
+            win.style.left = "50%";
+            win.style.transform = "translate(-50%, -50%)";
+            win.style.fontSize = "3.5rem";
+            win.style.color = "#00ff66";
+            win.style.textShadow = "0 0 10px #00ff66";
+            win.style.whiteSpace = "nowrap";
+            win.style.zIndex = "50";
+
+            document.body.appendChild(win);
+        }
 
         word.classList.add("hit");
         setTimeout(() => word.remove(), 300);
@@ -266,6 +284,8 @@ function crearPalabra(texto) {
    INICIAR JUEGO DESPUÉS DE "go"
 ------------------------------ */
 function startGame() {
+    // Ocultar CodeInMind>go
+    document.getElementById("typing").style.display = "none";
     timerRunning = true;
     lenguajes.forEach(l => crearPalabra(l));
 }
