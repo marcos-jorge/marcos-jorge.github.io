@@ -199,7 +199,7 @@ function escribir() {
     if (i < texto.length) {
         el.textContent += texto.charAt(i);
         i++;
-        setTimeout(escribir, 150); // ← velocidad del typing (NO SE TOCA)
+        setTimeout(escribir, 100); // ← velocidad del typing (NO SE TOCA)
     } else {
         // ← Espera antes de que aparezcan las palabras
         setTimeout(startGame, 1500); // 1500 ms = 1.5 segundos
