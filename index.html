@@ -186,9 +186,59 @@
         let score = 0;
         const scoreEl = document.getElementById("score");
 
+        /* AUDIO CONTEXT */
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        /* SONIDO DE DISPARO */
+        function playShot() {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = "square";
+            osc.frequency.value = 300;
+
+            gain.gain.value = 0.2;
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            setTimeout(() => osc.stop(), 80);
+        }
+
+        /* SONIDO DE IMPACTO */
+        function playHit() {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = "sawtooth";
+            osc.frequency.value = 120;
+
+            gain.gain.value = 0.25;
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            setTimeout(() => osc.stop(), 120);
+        }
+
         /* DISPARAR A LAS PALABRAS */
         document.querySelectorAll(".floating-word").forEach(word => {
             word.addEventListener("click", () => {
+
+                playShot(); // sonido de disparo
+
+                setTimeout(() => playHit(), 80); // sonido de impacto
+
                 score++;
                 scoreEl.textContent = "SCORE: " + score;
 
