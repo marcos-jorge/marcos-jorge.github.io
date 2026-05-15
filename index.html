@@ -164,10 +164,14 @@
 	    }
 
 	    /* Footer más pequeño */
-	    #creditos {
-	        font-size: 0.9rem;
-	        bottom: 10px;
-	    }
+		    #creditos {
+		        position: fixed;
+		        bottom: 10px;
+		        left: 50%;
+		        transform: translateX(-50%);
+		        font-size: 0.9rem;
+		        z-index: 9999; /* SIEMPRE ARRIBA */
+		    }
 	
 	    /* Mensaje de victoria más pequeño */
 	    h1 {
@@ -292,7 +296,7 @@ function escribirFinal(texto) {
     end.style.color = "#00ff66";
     end.style.textShadow = "0 0 10px #00ff66";
     end.style.whiteSpace = "nowrap";
-    end.style.zIndex = "50"; // aseguramos que quede arriba de todo
+    end.style.zIndex = "500"; // aseguramos que quede arriba de todo
 
     document.body.appendChild(end);
 
