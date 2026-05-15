@@ -17,7 +17,6 @@
             position: relative;
         }
 
-        /* SCORE Y TIEMPO */
         #score, #timer {
             position: absolute;
             top: 20px;
@@ -27,9 +26,8 @@
             z-index: 10;
         }
         #score { left: 20px; }
-        #timer { right: 20px; }
+        #timer { left: 20px; top: 70px; }
 
-        /* MIRA */
         #mira {
             position: fixed;
             width: 40px;
@@ -61,7 +59,6 @@
             transform: translate(-50%, -50%);
         }
 
-        /* CODEINMIND CENTRADO */
         #typing {
             position: absolute;
             top: 50%;
@@ -86,7 +83,6 @@
             50% { opacity: 1; }
         }
 
-        /* PALABRAS FLOTANTES */
         .floating-word {
             position: absolute;
             font-size: 2.2rem;
@@ -100,7 +96,6 @@
             animation-iteration-count: infinite;
         }
 
-        /* ANIMACIÓN */
         @keyframes float {
             0% { transform: translate(0,0) rotate(0deg); }
             25% { transform: translate(40vw,-20vh) rotate(90deg); }
@@ -109,7 +104,6 @@
             100% { transform: translate(0,0) rotate(360deg); }
         }
 
-        /* IMPACTO */
         .hit {
             animation: hitEffect 0.3s forwards;
         }
@@ -118,7 +112,6 @@
             100% { opacity: 0; transform: scale(2); }
         }
 
-        /* FOOTER */
         #creditos {
             position: absolute;
             bottom: 20px;
@@ -143,10 +136,11 @@
 
 <script>
 /* ------------------------------
-   CODEINMIND TYPING
+   CODEINMIND>go TYPING
 ------------------------------ */
-const texto = "CodeInMind>";
+const texto = "CodeInMind>go";
 let i = 0;
+let typingDone = false;
 
 function escribir() {
     const el = document.getElementById("typing");
@@ -156,9 +150,8 @@ function escribir() {
         i++;
         setTimeout(escribir, 150);
     } else {
-        const cursor = document.createElement("span");
-        cursor.className = "cursor";
-        el.appendChild(cursor);
+        typingDone = true;
+        startGame(); // ← AQUÍ EMPIEZA EL JUEGO
     }
 }
 escribir();
@@ -211,7 +204,7 @@ function playHit() {
 ------------------------------ */
 let score = 0;
 let time = 0;
-let timerRunning = true;
+let timerRunning = false;
 
 const scoreEl = document.getElementById("score");
 const timerEl = document.getElementById("timer");
@@ -237,7 +230,7 @@ const lenguajes = [
 let palabrasRestantes = lenguajes.length;
 
 /* ------------------------------
-   CREAR PALABRAS UNA SOLA VEZ
+   CREAR PALABRAS (solo después de go)
 ------------------------------ */
 function crearPalabra(texto) {
     const word = document.createElement("span");
@@ -269,7 +262,13 @@ function crearPalabra(texto) {
     document.body.appendChild(word);
 }
 
-lenguajes.forEach(l => crearPalabra(l));
+/* ------------------------------
+   INICIAR JUEGO DESPUÉS DE "go"
+------------------------------ */
+function startGame() {
+    timerRunning = true;
+    lenguajes.forEach(l => crearPalabra(l));
+}
 
 /* ------------------------------
    SONIDO DE DISPARO GLOBAL
