@@ -3,56 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>En Construcción</title>
+    <title>codeinmind</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(135deg, #232526, #414345);
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
+            background: #0d0d0d;
+            color: #00e0c6;
+            font-family: "Inter", sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-        h1 {
-            font-size: 3em;
+            height: 100vh;
             margin: 0;
         }
-        p {
-            font-size: 1.5em;
-            margin: 10px 0 20px 0;
+
+        h1 {
+            font-size: 4rem;
+            letter-spacing: 4px;
+            white-space: nowrap;
+            border-right: 3px solid #00e0c6;
+            padding-right: 10px;
+            animation: blink 0.7s infinite;
         }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #fff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        footer {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 1em;
-            color: #ffffff;
+
+        @keyframes blink {
+            0% { border-color: transparent; }
+            50% { border-color: #00e0c6; }
+            100% { border-color: transparent; }
         }
     </style>
 </head>
 <body>
-    <h1>¡En Construcción!</h1>
-    <p>Estamos trabajando para traerte algo increíble. ¡Vuelve pronto!</p>
-    <div class="loader"></div>
-    <footer>A project by Marcos Varela and Bruno Varela</footer>
+
+    <h1 id="titulo"></h1>
+
+    <script>
+        const texto = "codeinmind";
+        let i = 0;
+
+        function escribir() {
+            if (i < texto.length) {
+                document.getElementById("titulo").textContent += texto.charAt(i);
+                i++;
+                setTimeout(escribir, 150); // velocidad de escritura
+            }
+        }
+
+        escribir();
+    </script>
+
 </body>
 </html>
