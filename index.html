@@ -85,9 +85,22 @@
         const texto = "CodeInMind>";
         let i = 0;
 
-        let audioCtx = null;
+        function escribir() {
+            const el = document.getElementById("typing");
 
-        function playKeySound() {
-            try {
-                if (!audioCtx) {
-                    audioCtx = new (window.AudioContext
+            if (i < texto.length) {
+                el.textContent += texto.charAt(i);
+                i++;
+                setTimeout(escribir, 150);
+            } else {
+                const cursor = document.createElement("span");
+                cursor.className = "cursor";
+                el.appendChild(cursor);
+            }
+        }
+
+        escribir();
+    </script>
+
+</body>
+</html>
