@@ -29,7 +29,8 @@
             padding: 16px;
             box-shadow: 0 0 20px #00ff66;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             z-index: 2;
         }
 
@@ -93,21 +94,11 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translate3d(0, 0, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate3d(40vw, -20vh, 0) rotate(90deg);
-            }
-            50% {
-                transform: translate3d(-20vw, 30vh, 0) rotate(180deg);
-            }
-            75% {
-                transform: translate3d(30vw, 10vh, 0) rotate(270deg);
-            }
-            100% {
-                transform: translate3d(0, 0, 0) rotate(360deg);
-            }
+            0% { transform: translate(0,0) rotate(0deg); }
+            25% { transform: translate(40vw,-20vh) rotate(90deg); }
+            50% { transform: translate(-20vw,30vh) rotate(180deg); }
+            75% { transform: translate(30vw,10vh) rotate(270deg); }
+            100% { transform: translate(0,0) rotate(360deg); }
         }
     </style>
 </head>
@@ -170,6 +161,28 @@
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                setTimeout(() => {
-                    osc.stop();
-                }, 25);
+                setTimeout(() => osc.stop(), 25);
+            } catch (e) {}
+        }
+
+        function typeText(text, speed = 30) {
+            return new Promise(resolve => {
+                let i = 0;
+                function step() {
+                    if (i < text.length) {
+                        consoleEl.textContent += text.charAt(i);
+                        if (text.charAt(i) !== " " && text.charAt(i) !== "\n") playKeySound();
+                        i++;
+                        consoleEl.scrollTop = consoleEl.scrollHeight;
+                        setTimeout(step, speed);
+                    } else resolve();
+                }
+                step();
+            });
+        }
+
+        function newLine() {
+            consoleEl.textContent += "\n";
+        }
+
+        async
