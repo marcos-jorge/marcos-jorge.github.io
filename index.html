@@ -123,6 +123,57 @@
             text-shadow: 0 0 10px #00ff66;
             z-index: 20;
         }
+        /* ------------------------------
+  			 MODO MÓVIL (pantallas pequeñas)
+		------------------------------ */
+		@media (max-width: 768px) {
+	
+	    /* Reducir tamaño del texto principal */
+	    #typing {
+	        font-size: 2rem;
+	    }
+
+	    /* Score y tiempo más pequeños */
+	    #score {
+	        font-size: 1.5rem;
+	        top: 10px;
+	        left: 10px;
+	    }
+	
+	    #timer {
+	        font-size: 1.3rem;
+	        top: 45px;
+	        left: 10px;
+	    }
+
+	    /* Palabras más pequeñas */
+	    .floating-word {
+	        font-size: 1.4rem;
+	    }
+	
+	    /* Mira más pequeña */
+	    #mira {
+	        width: 25px;
+	        height: 25px;
+	    }
+	    #mira::after {
+	        height: 12px;
+	    }
+	    #mira::before {
+	        width: 12px;
+	    }
+
+	    /* Footer más pequeño */
+	    #creditos {
+	        font-size: 0.9rem;
+	        bottom: 10px;
+	    }
+	
+	    /* Mensaje de victoria más pequeño */
+	    h1 {
+	        font-size: 2rem !important;
+	    }
+	}
     </style>
 </head>
 <body>
