@@ -83,7 +83,19 @@
             background: rgba(0, 40, 0, 0.7);
             cursor: pointer;
         }
-
+		
+		.creditos {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            color: #CCCCCC;
+            opacity: 0.8;
+            text-shadow: 0 0 10px #CCCCCC;
+            z-index: 20;
+        }
+		
         @keyframes crt-flicker {
             0% { opacity: 0.8; }
             5% { opacity: 1; }
@@ -114,6 +126,8 @@
 		<a class="menu-item" href="contact.html">3. Contact</a>
     </div>
 
+	<footer class="creditos">Created by Marcos Varela and Bruno Varela</footer>
+	
     <script>
         // Efecto de escritura para cada línea del menú
         document.addEventListener("DOMContentLoaded", () => {
