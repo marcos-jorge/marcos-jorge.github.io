@@ -3,401 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeInMind — Desarrollo de Juegos y Herramientas Digitales</title>
-	<meta name="description" content="CodeInMind es un proyecto interactivo creado por Marcos y Bruno, dedicado al desarrollo de juegos y utilidades digitales diseñadas para ayudar y aportar valor a otras personas.">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
-	<script type="application/ld+json">
-	{
-	  "@context": "https://schema.org",
-	  "@type": "Person",
-	  "name": "Marcos Jorge Varela",
-	  "alternateName": "CodeInMind",
-	  "url": "https://codeinmind.es",
-	  "image": "https://codeinmind.es/img/marcos.jpg",
-	  "jobTitle": "Analista de sistemas y Creador de CodeInMind",
-	  "description": "Fundador de CodeInMind y especialista en desarrollo de software.",
-	  "worksFor": {
-	    "@type": "Organization",
-	    "name": "CodeInMind",
-	    "url": "https://codeinmind.es"
-	  },
-	  "sameAs": [
-	    "https://github.com/marcos-jorge",
-	    "https://blog.codeinmind.es/",
-	    "https://www.linkedin.com/in/marcos-jorge-varela/",
-	    "https://www.youtube.com/@codeinmind"
-	  ]
-	}
-	</script>
-	<style>
+    <title>En Construcción</title>
+    <style>
         body {
-            background: #020202;
-            color: #00ff66;
-            font-family: "Fira Code", monospace;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #232526, #414345);
+            color: #fff;
             margin: 0;
+            padding: 0;
             height: 100vh;
-            overflow: hidden;
-            cursor: none;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-
-        #score, #timer {
-            position: absolute;
-            top: 20px;
-            font-size: 2rem;
-            color: #00ff66;
-            text-shadow: 0 0 10px #00ff66;
-            z-index: 10;
+        h1 {
+            font-size: 3em;
+            margin: 0;
         }
-        #score { left: 20px; }
-        #timer { left: 20px; top: 70px; }
-
-        #mira {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 2px solid #00ff66;
+        p {
+            font-size: 1.5em;
+            margin: 10px 0 20px 0;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #fff;
             border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px #00ff66;
-            z-index: 9999;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
-        #mira::after, #mira::before {
-            content: "";
-            position: absolute;
-            background: #00ff66;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        #mira::after {
-            width: 2px;
-            height: 20px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        footer {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 1em;
+            color: #ffffff;
         }
-        #mira::before {
-            width: 20px;
-            height: 2px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #typing {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3.5rem;
-            text-shadow: 0 0 10px #00ff66;
-            white-space: nowrap;
-            z-index: 5;
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 14px;
-            height: 2.2rem;
-            background: #00ff66;
-            margin-left: 6px;
-            animation: blink 0.7s infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        .floating-word {
-            position: absolute;
-            font-size: 2.2rem;
-            font-weight: bold;
-            opacity: 0.7;
-            text-shadow: 0 0 12px currentColor;
-            pointer-events: auto;
-            user-select: none;
-            z-index: 3;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0,0) rotate(0deg); }
-            25% { transform: translate(40vw,-20vh) rotate(90deg); }
-            50% { transform: translate(-20vw,30vh) rotate(180deg); }
-            75% { transform: translate(30vw,10vh) rotate(270deg); }
-            100% { transform: translate(0,0) rotate(360deg); }
-        }
-
-        .hit {
-            animation: hitEffect 0.3s forwards;
-        }
-        @keyframes hitEffect {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(2); }
-        }
-
-        #creditos {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2rem;
-            color: #00ff66;
-            opacity: 0.8;
-            text-shadow: 0 0 10px #00ff66;
-            z-index: 20;
-        }
-        /* ------------------------------
-  			 MODO MÓVIL (pantallas pequeñas)
-		------------------------------ */
-		@media (max-width: 768px) {
-	
-	    /* Reducir tamaño del texto principal */
-	    #typing {
-	        font-size: 2rem;
-	    }
-
-	    /* Score y tiempo más pequeños */
-	    #score {
-	        font-size: 1.5rem;
-	        top: 10px;
-	        left: 10px;
-	    }
-	
-	    #timer {
-	        font-size: 1.3rem;
-	        top: 45px;
-	        left: 10px;
-	    }
-
-	    /* Palabras más pequeñas */
-	    .floating-word {
-	        font-size: 1.4rem;
-	    }
-	
-	    /* Mira más pequeña */
-	    #mira {
-	        width: 25px;
-	        height: 25px;
-	    }
-	    #mira::after {
-	        height: 12px;
-	    }
-	    #mira::before {
-	        width: 12px;
-	    }
-
-	    /* Footer más pequeño */
-		    #creditos {
-		        position: fixed;
-		        bottom: 10px;
-		        left: 50%;
-		        transform: translateX(-50%);
-		        font-size: 0.9rem;
-		        z-index: 9999; /* SIEMPRE ARRIBA */
-		    }
-	
-	    /* Mensaje de victoria más pequeño */
-	    h1 {
-	        font-size: 2rem !important;
-	    }
-	}
     </style>
 </head>
 <body>
-
-    <div id="score">SCORE: 0</div>
-    <div id="timer">TIME: 0.0s</div>
-    <div id="mira"></div>
-    <h1 id="typing"></h1>
-
-    <footer id="creditos">Created by Marcos and Bruno Varela</footer>
-
-<script>
-/* ------------------------------
-   CODEINMIND>go TYPING
------------------------------- */
-const texto = "CodeInMind>go";
-let i = 0;
-let typingDone = false;
-
-function escribir() {
-    const el = document.getElementById("typing");
-
-    if (i < texto.length) {
-        el.textContent += texto.charAt(i);
-        i++;
-        setTimeout(escribir, 100); // ← velocidad del typing (NO SE TOCA)
-    } else {
-        // ← Espera antes de que aparezcan las palabras
-        setTimeout(startGame, 1500); // 1500 ms = 1.5 segundos
-    }
-}
-escribir();
-
-/* ------------------------------
-   MIRA
------------------------------- */
-const mira = document.getElementById("mira");
-document.addEventListener("mousemove", e => {
-    mira.style.left = e.clientX + "px";
-    mira.style.top = e.clientY + "px";
-});
-
-/* ------------------------------
-   AUDIO
------------------------------- */
-let audioCtx = null;
-function initAudio() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
-
-function playShot() {
-    initAudio();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = "square";
-    osc.frequency.value = 350;
-    gain.gain.value = 0.25;
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    setTimeout(() => osc.stop(), 80);
-}
-
-function playHit() {
-    initAudio();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = "sawtooth";
-    osc.frequency.value = 120;
-    gain.gain.value = 0.3;
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    setTimeout(() => osc.stop(), 120);
-}
-
-/* ------------------------------
-   SCORE + TIMER
------------------------------- */
-let score = 0;
-let time = 0;
-let timerRunning = false;
-
-const scoreEl = document.getElementById("score");
-const timerEl = document.getElementById("timer");
-
-setInterval(() => {
-    if (timerRunning) {
-        time += 0.1;
-        timerEl.textContent = "TIME: " + time.toFixed(1) + "s";
-    }
-}, 100);
-
-/* ------------------------------
-   LENGUAJES
------------------------------- */
-const lenguajes = [
-   /* "GENEXUS","HTML","CSS","JAVASCRIPT","PYTHON","SQL","C#","JAVA",
-    "RUST","GO","KOTLIN","SWIFT","TYPESCRIPT","DART","PHP","R","RUBY",
-    "PERL","SCALA","HASKELL","ELIXIR","C","C++","BASIC","COBOL","FORTRAN",
-    "PASCAL","LISP","PROLOG","ZIG","NIM","CRYSTAL","SOLIDITY","MOVE","WASM",
-    "REACT","VUE","ANGULAR","NEXTJS","NODEJS","SASS","LESS","MATLAB","JULIA"
-    */
-	"GENEXUS","HTML","CSS","JAVASCRIPT"
-];
-
-let palabrasRestantes = lenguajes.length;
-
-function escribirFinal(texto) {
-    const end = document.createElement("h1");
-    end.style.position = "absolute";
-    end.style.top = "50%";
-    end.style.left = "50%";
-    end.style.transform = "translate(-50%, -50%)";
-    end.style.fontSize = "3.5rem";
-    end.style.color = "#00ff66";
-    end.style.textShadow = "0 0 10px #00ff66";
-    end.style.whiteSpace = "nowrap";
-    end.style.zIndex = "500"; // aseguramos que quede arriba de todo
-
-    document.body.appendChild(end);
-
-    let i = 0;
-
-    function escribirLetra() {
-        if (i < texto.length) {
-            end.textContent += texto.charAt(i);
-            i++;
-            setTimeout(escribirLetra, 150); // misma velocidad que el inicio
-        }
-    }
-
-    escribirLetra();
-}
-
-/* ------------------------------
-   CREAR PALABRAS (solo después de go)
------------------------------- */
-function crearPalabra(texto) {
-    const word = document.createElement("span");
-    word.className = "floating-word";
-    word.textContent = texto;
-
-    const colores = ["#00ff66","#00eaff","#ff00ff","#ff0066","#ffaa00","#00ffcc"];
-    word.style.color = colores[Math.floor(Math.random() * colores.length)];
-
-    word.style.top = Math.random() * 80 + "%";
-    word.style.left = Math.random() * 80 + "%";
-
-    const dur = 10 + Math.random() * 15;
-    word.style.animation = `float ${dur}s linear infinite`;
-
-    word.addEventListener("click", e => {
-        e.stopPropagation();
-        playHit();
-        score++;
-        scoreEl.textContent = "SCORE: " + score;
-
-        palabrasRestantes--;
-
-        // 🟩 CUANDO GANAS → escribir final letra por letra
-        if (palabrasRestantes === 0) {
-            timerRunning = false;
-
-            // Ocultar cualquier texto previo
-            const typing = document.getElementById("typing");
-            if (typing) typing.style.display = "none";
-
-            escribirFinal("The End");
-        }
-
-        word.classList.add("hit");
-        setTimeout(() => word.remove(), 300);
-    });
-
-    document.body.appendChild(word);
-}
-
-/* ------------------------------
-   INICIAR JUEGO DESPUÉS DE "go"
------------------------------- */
-function startGame() {
-    // Ocultar CodeInMind>go
-    document.getElementById("typing").style.display = "none";
-    timerRunning = true;
-    lenguajes.forEach(l => crearPalabra(l));
-}
-
-/* ------------------------------
-   SONIDO DE DISPARO GLOBAL
------------------------------- */
-document.addEventListener("click", () => playShot());
-</script>
-
+    <h1>¡En Construcción!</h1>
+    <p>Estamos trabajando para traerte algo increíble. ¡Vuelve pronto!</p>
+    <div class="loader"></div>
+    <footer>A project by Marcos Varela and Bruno Varela</footer>
 </body>
 </html>
