@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>En Construcción</title>
+
     <style>
         body {
             font-family: "Courier New", monospace;
-            text-align: center;
             background: #000;
             color: #00ff00;
             margin: 0;
@@ -17,16 +17,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
         }
+
         h1 {
             font-size: 3em;
             margin: 0;
             text-shadow: 0 0 8px #00ff00;
         }
+
         p {
             font-size: 1.5em;
             margin: 10px 0 20px 0;
         }
+
         .loader {
             border: 8px solid #003300;
             border-top: 8px solid #00ff00;
@@ -37,24 +41,95 @@
             margin: 20px auto;
             box-shadow: 0 0 10px #00ff00;
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-		footer {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 1em;
+
+        /* Caja estilo AS/400 */
+        .as400-box {
+            border: 3px solid #00ff00;
+            padding: 25px 40px;
+            width: 350px;
+            background: rgba(0, 20, 0, 0.6);
+            font-family: "Courier New", monospace;
             color: #00ff00;
+            text-shadow: 0 0 6px #00ff00;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeIn 1s forwards, crt-flicker 0.25s infinite alternate;
+            text-align: left; /* ← AQUÍ SE ALINEA TODO A LA IZQUIERDA */
+        }
+
+        .menu-title {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .menu-item {
+            display: block;
+            font-size: 1.3em;
+            padding: 6px 0;
+            color: #00ff00;
+            text-decoration: none;
+            opacity: 0;
+        }
+
+        .menu-item:hover {
+            background: rgba(0, 40, 0, 0.7);
+            cursor: pointer;
+        }
+
+        @keyframes crt-flicker {
+            0% { opacity: 0.8; }
+            5% { opacity: 1; }
+            10% { opacity: 0.7; }
+            15% { opacity: 1; }
+            20% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
     </style>
 </head>
+
 <body>
-    <h1>¡En Construcción!</h1>
-    <p>Estamos trabajando para traerte algo increíble. ¡Vuelve pronto!</p>
+
+    <h1>En construcción...</h1>
+    <p>Estamos preparando algo muy CodeInMind.</p>
+
     <div class="loader"></div>
-    <footer>A project by Marcos Varela and Bruno Varela</footer>
+
+    <!-- MENÚ AS/400 -->
+    <div class="as400-box" id="terminal">
+        <div class="menu-title">MAIN MENU</div>
+        <a class="menu-item" href="projects.html">1. Projects</a>
+        <a class="menu-item" href="tools.html">2. Tools</a>
+        <a class="menu-item" href="about.html">3. About</a>
+		<a class="menu-item" href="contact.html">1. Contact</a>
+    </div>
+
+    <script>
+        // Efecto de escritura para cada línea del menú
+        document.addEventListener("DOMContentLoaded", () => {
+            const items = document.querySelectorAll(".menu-item");
+            let delay = 500;
+
+            items.forEach((item) => {
+                setTimeout(() => {
+                    item.style.transition = "opacity 0.3s";
+                    item.style.opacity = 1;
+                }, delay);
+                delay += 300;
+            });
+        });
+    </script>
+
 </body>
 </html>
