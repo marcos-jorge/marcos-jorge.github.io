@@ -83,7 +83,46 @@
             background: rgba(0, 40, 0, 0.7);
             cursor: pointer;
         }
-		
+		/* Fondo oscuro semitransparente */
+        .prompt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        /* Caja estilo AS/400 */
+        .prompt-box {
+            border: 3px solid #00ff00;
+            background: rgba(0, 20, 0, 0.6);
+            padding: 25px 40px;
+            width: 420px;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            text-shadow: 0 0 6px #00ff00;
+            animation: fadeIn 0.5s forwards, crt-flicker 0.25s infinite alternate;
+        }
+
+        /* Título */
+        .prompt-title {
+            font-size: 1.5em;
+            border-bottom: 2px solid #00ff00;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+        }
+
+        /* Botón cerrar */
+        .close-btn:hover {
+            background: rgba(0, 40, 0, 0.7);
+            cursor: pointer;
+        }
+
 		.creditos {
             position: absolute;
             bottom: 20px;
@@ -95,7 +134,16 @@
             text-shadow: 0 0 10px #CCCCCC;
             z-index: 20;
         }
-		
+        .about-text {
+            text-align: left;
+            padding-left: 10px;
+            line-height: 1.4;
+        }
+
+        .about-label {
+            font-weight: bold;
+            text-decoration: underline;
+        }
         @keyframes crt-flicker {
             0% { opacity: 0.8; }
             5% { opacity: 1; }
@@ -114,16 +162,30 @@
 <body>
 
     <h1>Under construction!</h1>
-    <p>We’re crafting something very @codeinmind:~#</p>
+    <p>We’re crafting something very cool...</p>
 
     <div class="loader"></div>
 
     <!-- MENÚ AS/400 -->
     <div class="as400-box" id="terminal">
         <div class="menu-title">MAIN MENU</div>
-        <a class="menu-item" href="projects.html">1. Projects</a>
-        <a class="menu-item" href="about.html">2. About</a>
+        <a class="menu-item" href="projects/projects.html">1. Projects</a>
+        <!--<a class="menu-item" href="about.html">2. About</a> -->
+        <a id="aboutLink" class="menu-item">2. About</a>
 		<a class="menu-item" href="contact.html">3. Contact</a>
+    </div>
+
+
+    <!-- Prompt About -->
+    <div id="aboutPrompt" class="prompt-overlay">
+        <div class="prompt-box">
+            <p class="about-text">
+                Created by Marcos &amp; Bruno.<br>
+                A father‑and‑son team passionate about coding and creative projects.<br>
+                CodeInMind is our space to craft, test and deploy ideas together.
+            </p>
+            <a class="menu-item close-btn">Close</a>
+        </div>
     </div>
 
 	<footer class="creditos">Created by Marcos Varela and Bruno Varela</footer>
@@ -141,6 +203,20 @@
                 }, delay);
                 delay += 300;
             });
+        });        
+    </script>
+
+    <script>
+        const aboutLink = document.getElementById("aboutLink");
+        const aboutPrompt = document.getElementById("aboutPrompt");
+        const closeBtn = document.querySelector(".close-btn");
+
+        aboutLink.addEventListener("click", () => {
+            aboutPrompt.style.display = "flex";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            aboutPrompt.style.display = "none";
         });
     </script>
 
