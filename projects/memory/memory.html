@@ -18,7 +18,7 @@
             text-shadow: 0 0 10px #0f0;
         }
 
-        select {
+        select, button {
             background: #000;
             color: #0f0;
             border: 2px solid #0f0;
@@ -27,6 +27,11 @@
             font-size: 18px;
             margin: 10px;
             text-shadow: 0 0 6px #0f0;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: rgba(0, 40, 0, 0.7);
         }
 
         #cards {
@@ -79,7 +84,6 @@
             transform: rotateY(180deg);
         }
 
-        /* Botón Back estilo AS/400 */
         .menu-item {
             display: block;
             font-size: 1.3em;
@@ -98,11 +102,7 @@
             cursor: pointer;
         }
 
-        .center-btn {
-            text-align: center;
-        }
-
-        /* Responsive automático según pantalla */
+        /* Responsive automático */
         @media (max-width: 900px) {
             .card {
                 width: 180px;
@@ -125,7 +125,7 @@
                 font-size: 16px;
                 padding: 6px;
             }
-            select {
+            select, button {
                 font-size: 16px;
                 padding: 6px 10px;
             }
@@ -148,7 +148,6 @@
                 font-size: 18px;
             }
         }
-
     </style>
 </head>
 
@@ -161,12 +160,13 @@
         <option value="en-es">EN → ES</option>
     </select>
 
-    <!-- Selector de tema -->
     <select id="temaSelector">
         <option value="basico">Básico</option>
         <option value="preguntas">Preguntas</option>
         <option value="viajes">Viajes</option>
     </select>
+
+    <button id="mezclarBtn">Mezclar</button>
 
     <div id="cards"></div>
 
@@ -179,13 +179,11 @@
                 { es: "Gracias", en: "Thank you" },
                 { es: "Por favor", en: "Please" }
             ],
-
             preguntas: [
                 { es: "¿Dónde está el baño?", en: "Where is the bathroom?" },
                 { es: "¿Qué hora es?", en: "What time is it?" },
                 { es: "¿Cómo te llamas?", en: "What is your name?" }
             ],
-
             viajes: [
                 { es: "Necesito un taxi", en: "I need a taxi" },
                 { es: "¿Cuánto cuesta?", en: "How much is it?" },
@@ -194,16 +192,8 @@
         };
 
         const temasNombres = {
-            es: {
-                basico: "Básico",
-                preguntas: "Preguntas",
-                viajes: "Viajes"
-            },
-            en: {
-                basico: "Basic",
-                preguntas: "Questions",
-                viajes: "Travel"
-            }
+            es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes" },
+            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel" }
         };
 
         const cardsContainer = document.getElementById("cards");
@@ -219,12 +209,20 @@
         }
 
         function actualizarNombresTemas() {
-            const modo = selectorModo.value;
-            const idioma = modo === "es-en" ? "es" : "en";
-
+            const idioma = selectorModo.value === "es-en" ? "es" : "en";
             selectorTema.options[0].text = temasNombres[idioma].basico;
             selectorTema.options[1].text = temasNombres[idioma].preguntas;
             selectorTema.options[2].text = temasNombres[idioma].viajes;
+            
+            document.getElementById("mezclarBtn").textContent =
+            idioma === "es" ? "Mezclar" : "Shuffle";
+        }
+
+        function mezclarArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
 
         function cargarTarjetas() {
@@ -237,13 +235,8 @@
                 const card = document.createElement("div");
                 card.classList.add("card");
 
-                let frontText = frase.es;
-                let backText = frase.en;
-
-                if (modo === "en-es") {
-                    frontText = frase.en;
-                    backText = frase.es;
-                }
+                let frontText = modo === "es-en" ? frase.es : frase.en;
+                let backText = modo === "es-en" ? frase.en : frase.es;
 
                 card.innerHTML = `
                     <div class="card-inner">
@@ -254,14 +247,8 @@
 
                 card.addEventListener("click", () => {
                     const flipped = card.classList.toggle("flipped");
-
-                    // AUDIO DEL LADO OCULTO (la traducción)
                     if (flipped) {
-                        if (modo === "es-en") {
-                            speak(backText, "en-US");
-                        } else {
-                            speak(backText, "es-ES");
-                        }
+                        speak(backText, modo === "es-en" ? "en-US" : "es-ES");
                     }
                 });
 
@@ -272,15 +259,18 @@
         actualizarNombresTemas();
         cargarTarjetas();
 
-        // cambiar tema o idioma
         selectorTema.addEventListener("change", cargarTarjetas);
-
         selectorModo.addEventListener("change", () => {
             actualizarNombresTemas();
+            cargarTarjetas();
+        });
+
+        document.getElementById("mezclarBtn").addEventListener("click", () => {
+            const tema = selectorTema.value;
+            mezclarArray(temas[tema]);
             cargarTarjetas();
         });
     </script>
 
 </body>
 </html>
-
