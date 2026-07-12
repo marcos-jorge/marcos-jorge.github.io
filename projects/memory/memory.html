@@ -164,6 +164,7 @@
         <option value="basico">Básico</option>
         <option value="preguntas">Preguntas</option>
         <option value="viajes">Viajes</option>
+        <option value="structures">Structures</option>
     </select>
 
     <button id="mezclarBtn">Mezclar</button>
@@ -175,25 +176,134 @@
     <script>
         const temas = {
             basico: [
-                { es: "Hola", en: "Hello" },
-                { es: "Gracias", en: "Thank you" },
-                { es: "Por favor", en: "Please" }
+                { es: "Nada mal", en: "Not bad" },
+                { es: "No estoy seguro", en: "I'm not sure" },
+                { es: "Depende", en: "It depends" },
+                { es: "En realidad depende", en: "Actually, it depends" },
+                { es: "No realmente", en: "Not really" },
+                { es: "Bastante bien", en: "Pretty good" },
+                { es: "Bueno déjame pensar", en: "Well, let me think"},
+                { es: "Esa es una buena pregunta", en: "That's a good question"},
+                { es: "Veamos", en: "Let's see"},
+                { es: "Supongo", en: "I guess"},
+                { es: "Estoy un poco cansado", en: "I'm a bit tired"},
+                { es: "Estoy genial", en: "I'm great"},
+                { es: "Bueno, para ser honesto", en: "Well, to be honest"},
+                { es: "¿De verdad?, cuéntame más", en: "Really?, tell me more"},
+                { es: "Nací en Estados Unidos", en: "I was born in Estados Unidos"},
+                { es: "Crecí en California", en: "I grew up in California"},
+                { es: "Acabo de cumplir 18 años", en: "I just turned 18"},
+                { es: "Soy hijo único", en: "I'm an only child"},
+                { es: "Me gusta jugar al fotbol", en: "I like to play football"},
+                { es: "Soy soltero", en: "I'm singled"},
+                { es: "Estoy comprometido", en: "I'm engaged"},
+                { es: "Estoy casado", en: "I'm married"},
+                { es: "Estoy divorciado", en: "I'm divorced"},
+                { es: "Hago ejercicio 3 veces a la semana", en: "I exercise three times a week"},
+                { es: "No hago ejercicio muy a menudo", en: "I don't exercise very often"},
+                { es: "He estado muy ocupado", en: "I've been too busy"},
+                { es: "Voy a visitar a mis padres este fin de semana", en: "I'm going to visit my parents this weekend"},
+                { es: "Estoy pensando ir de excursión", en: "I'm thinking of going hiking"},
+                { es: "Estoy muy enfermo", en: "I'm sick as a dog"},
+                { es: "Vienes?", en: "You coming"},
             ],
             preguntas: [
                 { es: "¿Dónde está el baño?", en: "Where is the bathroom?" },
                 { es: "¿Qué hora es?", en: "What time is it?" },
-                { es: "¿Cómo te llamas?", en: "What is your name?" }
+                { es: "¿Cómo va todo?", en: "How's everything?"},
+                { es: "¿Cual es mejor?", en: "Which one is better?"},
+                { es: "¿Qué debemos hacer?", en: "What should we do?"},
+                { es: "¿Te gusta?", en: "Do you like it?"},
+                { es: "¿Vas a ir?", en: "Will you go?"},
+                { es: "¿Cuál es mas barato?", en: "Wich one is cheaper?"},
+                { es: "¿Te gusta la comida picante?", en: "Do you like spicy food?"},
+                { es: "¿Estas cansado?", en: "Are you tired?"},
+                { es: "¿Es dificil/facil?", en: "Is it hard/easy?"},
+                { es: "¿Qué queires comer?", en: "What do you want to eat?"},
+                { es: "¿Cuál es la mejor parte de tu trabajo?", en: "What's is the best part of your job?"},
+                { es: "¿Te gusta esta aca?", en: "Do you like it here?"},
+                { es: "¿Cuál es tu comida favorita?", en: "What's your favorite food?"},
+                { es: "¿Porqué pasó?", en: "Why did it happen?"},
+                { es: "¿Como estuvo tu fin de semana?", en: "How was your weekend?"},
+                { es: "¿Qué tal tú?", en: "What about you?"},
+                { es: "¿Qué piensas tú?", en: "What do you think?"},
+                { es: "¿Cúal es más fácil?", en: "Which one is easier?"},
+                { es: "¿De donde eres?", en: "Where are you from?"},
+                { es: "¿A qué te dedicas?", en: "What do you do for a living?"},
+                { es: "¿Tienes hermanos?", en: "Do you have any siblings?"},
+                { es: "¿Tienes algún pasatiempo?", en: "Do you have any hobbies?"},
+                { es: "¿Estás casado?", en: "Are you married?"},
+                { es: "¿A que hora sueles despertarte?", en: "What time do you usually wake up?"},
+                { es: "¿Con qué frecuencia haces ejercicio?", en: "How offen do you exercise?"},
+                { es: "¿Cómo está el clima hoy?", en: "What's the weather like today?"},
+                { es: "¿Has leído algún buen libro últimamente?", en: "Have you read any good books lately?"},
+                { es: "¿Cual es tu plan para el fin de semana?", en: "What's your plan for the weekend?"},
+                { es: "¿Cómo te sientes hoy?", en: "How are you feeling todoy?"},
+                { es: "¿Todo bien?", en: "What's wrong?"},
             ],
             viajes: [
                 { es: "Necesito un taxi", en: "I need a taxi" },
                 { es: "¿Cuánto cuesta?", en: "How much is it?" },
                 { es: "¿Dónde está el hotel?", en: "Where is the hotel?" }
+            ],
+            structures:[
+                { es: "Puedo tomar vaso de agua", en: "Can I have a glass of water" },
+                { es: "¿Puedo sentarme aquí?", en: "Can I sit here?" },  
+                { es: "¿Puedo preguntarte algo?", en: "Can I ask you something?" },       
+                { es: "¿Puedo tomarme un descanso?", en: "Can I take a break?" },       
+                { es: "¿Puedo usar tú teléfono?", en: "Can I use your phone?" },       
+                { es: "Estoy acostumbrado a levantarme temprano", en: "I'm used to waking up early." },  
+                { es: "Estoy acostumbrado a hablar inglés en el trabajo.", en: "I'm used to speaking English at work." },
+                { es: "Estoy acostumbrado a conducir.", en: "I'm used to drinking coffee." },
+                { es: "No estoy acostumbrado a correr.", en: "I'm not used to running." },
+                { es: "No estoy acostumbrado a este clima frío.", en: "I'm not used to this cold weather." },
+                { es: "No me apetece estudiar hoy.", en: "I don't feel like studying today." },
+                { es: "No me apetece salir esta noche.", en: "I don't feel like going out tonight." },
+                { es: "No me apetece hablar ahora.", en: "I don't feel like talking right now." },
+                { es: "Me apetece tomar un café.", en: "I feel like having a coffee." },
+                { es: "Me apetece salir para hacer ejercicio.", en: "I feel like going out to exercise." },
+                { es: "Me lleva 30 minutos llegar al trabajo.", en: "It takes me 30 minutes to get to work." },
+                { es: "Me lleva 1 jora terminar esta tarea.", en: "It takes me an hour to finish this task." },
+                { es: "Tardo mucho en dormirme.", en: "It takes me forever to fall asleep." },
+                { es: "Me lleva una hora hacer el desayuno.", en: "It takes me an hour to make breakfast." },
+                { es: "Me lleva media hora pasear al perro.", en: "It takes me half an hour to walk the dog." },
+                { es: "Estoy pensando en mudarme a otra ciudad.", en: "I'm thinking of moving to another city." },
+                { es: "Estoy pensando en estudiar un grado.", en: "I'm thinking of studying a degree." },
+                { es: "Estoy pensando en dejar mi trabajo.", en: "I'm thinking of quitting my job." },
+                { es: "Estoy pensando en comenzar un negocio.", en: "I'm thinking of starting a business." },
+                { es: "El tema es que no tengo tiempo.", en: "The thing is that I don't have time." },
+                { es: "El tema es que ella no me dijo nada.", en: "The thing is that she didn't tell me anything." },
+                { es: "El tema es que ya hice planes.", en: "The thing is that I already made plans." },
+                { es: "Lo que pasa es que he estado muy ocupado.", en: "The thing is that I've been very busy." },
+                { es: "Lo que pasa es que no tengo ganas.", en: "The thing is that I don't feel like it." },
+                { es: "Yo preferiría quedarme en casa esta noche.", en: "I'd rather stay home tonight." },
+                { es: "Yo preferiría ir contigo.", en: "I'd rather go whith you." },
+                { es: "Yo preferiría quedarme solo.", en: "I would rather stay alone." },
+                { es: "Yo preferiría no ir muy tarde.", en: "I would rather not go too late." },
+                { es: "Yo preferiría no hablar de eso.", en: "I'd rather not talk about it." },
+                { es: "Yo preferiría caminar a coger el bus.", en: "I'd rather walk than take the bus." },
+                { es: "Estoy a punto de salir.", en: "I'm about to leave" },
+                { es: "Estoy a punto de empezar una reunión.", en: "I'm about to start a meeting" },
+                { es: "Estoy a punto de irme a la cama.", en: "I'm about to go to bed" },
+                { es: "Estoy a punto de cerrar un trato.", en: "I'm about to close a deal" },
+                { es: "Estoy a punto de terminar mi proyecto.", en: "I'm about to finish my project." },
+                { es: "Díme si necesitas ayuda.", en: "Let me know if you need help." },
+                { es: "Díme si vas a venir.", en: "Let me know if you'ar coming'." },
+                { es: "Díme si lo entendiste.", en: "Let me know if you understood it." },
+                { es: "Díme si necesitas algo más.", en: "Let me know if you need anything else." },
+
+                { es: "No he tenido tiempo de llamarte.", en: "I haven't had time to call you." },
+                { es: "No he tenido tiempo de ver esa película.", en: "I haven't had time to watch that movie." },
+                { es: "No he tenido tiempo de completar el ejercicio.", en: "I haven't had time to complete the exercise." },
+                { es: "No he tenido tiempo de hacer el desayuno.", en: "I haven't had time to make breakfast." },
+                { es: "No he tenido tiempo de llevar al perro al veterinario.", en: "I haven't had time to take the dog to the vet." },
             ]
+        
         };
 
         const temasNombres = {
-            es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes" },
-            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel" }
+            es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes", estructuras: "Estructuras" },
+            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel", structures: "Structres" }
         };
 
         const cardsContainer = document.getElementById("cards");
