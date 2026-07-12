@@ -164,7 +164,7 @@
         <option value="basico">Básico</option>
         <option value="preguntas">Preguntas</option>
         <option value="viajes">Viajes</option>
-        <option value="structures">Structures</option>
+        <option value="estructuras">Estructuras</option>
     </select>
 
     <button id="mezclarBtn">Mezclar</button>
@@ -246,7 +246,7 @@
                 { es: "¿Cuánto cuesta?", en: "How much is it?" },
                 { es: "¿Dónde está el hotel?", en: "Where is the hotel?" }
             ],
-            structures:[
+            estructuras:[
                 { es: "Puedo tomar vaso de agua", en: "Can I have a glass of water" },
                 { es: "¿Puedo sentarme aquí?", en: "Can I sit here?" },  
                 { es: "¿Puedo preguntarte algo?", en: "Can I ask you something?" },       
@@ -303,7 +303,7 @@
 
         const temasNombres = {
             es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes", estructuras: "Estructuras" },
-            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel", structures: "Structres" }
+            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel", estructuras: "Structures" }
         };
 
         const cardsContainer = document.getElementById("cards");
@@ -323,6 +323,7 @@
             selectorTema.options[0].text = temasNombres[idioma].basico;
             selectorTema.options[1].text = temasNombres[idioma].preguntas;
             selectorTema.options[2].text = temasNombres[idioma].viajes;
+            selectorTema.options[3].text = temasNombres[idioma].estructuras;
             
             document.getElementById("mezclarBtn").textContent =
             idioma === "es" ? "Mezclar" : "Shuffle";
