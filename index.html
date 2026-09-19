@@ -144,6 +144,24 @@
             font-weight: bold;
             text-decoration: underline;
         }
+        
+        .contact-text {
+            text-align: left;
+            padding-left: 10px;
+            line-height: 1.4;
+        }
+
+        .contact-label {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .contact-email {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 15px;
+        }
+
         @keyframes crt-flicker {
             0% { opacity: 0.8; }
             5% { opacity: 1; }
@@ -225,7 +243,7 @@
         <a class="menu-item" href="projects/projects.html">1. Projects</a>
         <!--<a class="menu-item" href="about.html">2. About</a> -->
         <a id="aboutLink" class="menu-item">2. About</a>
-		<a class="menu-item" href="contact.html">3. Contact</a>
+		<a id="contactLink" class="menu-item">3. Contact</a>
     </div>
 
 
@@ -238,6 +256,21 @@
                 CodeInMind is our space to craft, test and deploy ideas together.
             </p>
             <a class="menu-item close-btn">Close</a>
+        </div>
+    </div>
+
+       <!-- Prompt Contact -->
+    <div id="contactPrompt" class="prompt-overlay">
+        <div class="prompt-box">
+
+            <p class="contact-text">
+                Contact:
+            </p>
+
+            <p class="contact-email">info@codeinmind.es</p>
+
+            <a class="menu-item close-btn">Close</a>
+
         </div>
     </div>
 
@@ -262,15 +295,36 @@
     <script>
         const aboutLink = document.getElementById("aboutLink");
         const aboutPrompt = document.getElementById("aboutPrompt");
-        const closeBtn = document.querySelector(".close-btn");
+        const contactLink = document.getElementById("contactLink");
+        const contactPrompt = document.getElementById("contactPrompt");
+
+        //const closeBtn = document.querySelector(".close-btn");
+        //const contactCloseBtn = document.querySelector(".close-btn");
 
         aboutLink.addEventListener("click", () => {
             aboutPrompt.style.display = "flex";
         });
 
+        contactLink.addEventListener("click", () => {
+            contactPrompt.style.display = "flex";
+        });
+
+        /*    
         closeBtn.addEventListener("click", () => {
             aboutPrompt.style.display = "none";
         });
+               contactCloseBtn.addEventListener("click", () => {
+            contactPrompt.style.display = "none";
+        });
+        */
+
+        document.querySelectorAll(".close-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+            btn.closest(".prompt-overlay").style.display = "none";
+            });
+        });
+
+
     </script>
 
 </body>
