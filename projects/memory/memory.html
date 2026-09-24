@@ -165,6 +165,7 @@
         <option value="preguntas">Preguntas</option>
         <option value="viajes">Viajes</option>
         <option value="estructuras">Estructuras</option>
+        <option value="get">Get</option>
     </select>
 
     <button id="mezclarBtn">Mezclar</button>
@@ -307,13 +308,26 @@
                 { es: "No he tenido tiempo de completar el ejercicio.", en: "I haven't had time to complete the exercise." },
                 { es: "No he tenido tiempo de hacer el desayuno.", en: "I haven't had time to make breakfast." },
                 { es: "No he tenido tiempo de llevar al perro al veterinario.", en: "I haven't had time to take the dog to the vet." },
+            ],
+            get: [
+                { es: "Es tarde, necesitas levantarte.", en: "It's late! You need to get up." },
+                { es: "Deberías vestirte.", en: "You should get dressed." },
+                { es: "Prepárate", en: "Get ready." },
+                { es: "Súbete al coche", en: "Get in the car." },
+                { es: "Lárgate", en: "Get out of here." },
+                { es: "¿Podrías traerme un vaso de agua?", en: "Could you get me a glass of water?" },
+                { es: "Necesito volver a casa.", en: "I need to get back home." },
+                { es: "Llega temprano.", en: "Get there early." },
+                { es: "Ponte a trabajar.", en: "Get to work." },
+                { es: "Ve al grano.", en: "Get to the point." },
+                { es: "Ya entendí.", en: "I got it." },
+                { es: "Me corté el pelo.", en: "I got a haircut." }
             ]
-        
         };
 
         const temasNombres = {
-            es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes", estructuras: "Estructuras" },
-            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel", estructuras: "Structures" }
+            es: { basico: "Básico", preguntas: "Preguntas", viajes: "Viajes", estructuras: "Estructuras", get: Get },
+            en: { basico: "Basic", preguntas: "Questions", viajes: "Travel", estructuras: "Structures", get: Get }
         };
 
         const cardsContainer = document.getElementById("cards");
