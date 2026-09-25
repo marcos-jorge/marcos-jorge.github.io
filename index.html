@@ -157,10 +157,25 @@
         }
 
         .contact-email {
-            text-align: center;
+            text-align: left;
             font-size: 1.3em;
             margin-top: 15px;
+            margin-left: 12px;
         }
+
+        .youtube-link {
+            color: #ff4b4b;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .youtube-link:hover {
+            background: rgba(40, 0, 0, 0.7);
+            color: #ff0000;
+            text-shadow: 0 0 6px #ff0000;
+            cursor: pointer;
+        }
+
 
         @keyframes crt-flicker {
             0% { opacity: 0.8; }
@@ -244,6 +259,7 @@
         <!--<a class="menu-item" href="about.html">2. About</a> -->
         <a id="aboutLink" class="menu-item">2. About</a>
 		<a id="contactLink" class="menu-item">3. Contact</a>
+        <a class="menu-item youtube-link" href="https://www.youtube.com/@codeinmind" target="_blank">4. YouTube Channel</a>
     </div>
 
 
@@ -260,19 +276,19 @@
     </div>
 
        <!-- Prompt Contact -->
-    <div id="contactPrompt" class="prompt-overlay">
-        <div class="prompt-box">
+<div id="contactPrompt" class="prompt-overlay">
+    <div class="prompt-box">
 
-            <p class="contact-text">
-                Contact:
-            </p>
+        <p class="contact-text">
+            Contact:
+        </p>
 
-            <p class="contact-email">info@codeinmind.es</p>
+        <!-- Email principal -->
+        <p class="contact-email">info@codeinmind.es</p>
+        <a class="menu-item close-btn">Close</a>
 
-            <a class="menu-item close-btn">Close</a>
-
-        </div>
     </div>
+</div>
 
 	<footer class="creditos">Created by Marcos Varela and Bruno Varela</footer>
 	
