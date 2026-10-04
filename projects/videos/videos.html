@@ -31,14 +31,13 @@
         }
 
         .video-container {
-            width: 100%;          /* Ocupa todo el ancho disponible */
-            max-width: 800px;     /* Más ancho */
+            width: 100%;
+            max-width: 800px;
             margin: 20px auto;
             border: 2px solid #00ff00;
             border-radius: 6px;
             box-shadow: 0 0 15px #00ff00;
-
-            aspect-ratio: 16 / 9; /* Mantiene proporción pero NO se hace tan alto */
+            aspect-ratio: 16 / 9;
             overflow: hidden;
         }
 
@@ -46,6 +45,17 @@
             width: 100%;
             height: 100%;
             border: 0;
+        }
+
+        select {
+            background-color: #000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px;
+            font-size: 16px;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 20px;
         }
 
         .prompt {
@@ -65,14 +75,28 @@
         <p class="prompt">Status: <span style="color:#00ff00;">OK</span></p>
     </div>
 
+    <!-- LISTA DE VIDEOS -->
+    <select id="videoList">
+        <option value="o617Z2TdbPA">Aprendiendo Inglés – Episodio 1</option>
+        <option value="pDGI2M2b48M">CodeInMind – Memory Game</option>
+    </select>
+
     <div class="video-container">
-        <iframe 
+        <iframe id="videoFrame"
             src="https://www.youtube.com/embed/o617Z2TdbPA"
             allowfullscreen>
         </iframe>
     </div>
 
+    <script>
+        const select = document.getElementById("videoList");
+        const iframe = document.getElementById("videoFrame");
+
+        select.addEventListener("change", () => {
+            const videoId = select.value;
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        });
+    </script>
 
 </body>
 </html>
-
