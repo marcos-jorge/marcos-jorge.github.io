@@ -177,6 +177,7 @@
     </select>
 
     <button id="mezclarBtn">Mezclar</button>
+    <button id="playAllBtn">Escuchar todas</button>
 
     <div id="cards"></div>
 
@@ -1015,6 +1016,45 @@
             utter.pitch = 1;
             speechSynthesis.speak(utter);
         }
+        let reproduciendo = false;
+
+        function hablarAsync(text, lang) {
+            return new Promise(resolve => {
+
+                const utter = new SpeechSynthesisUtterance(text);
+
+                utter.lang = lang;
+                utter.rate = 1;
+                utter.pitch = 1;
+
+                utter.onend = () => resolve();
+
+                speechSynthesis.speak(utter);
+            });
+        }
+
+        async function reproducirTodas() {
+        if (reproduciendo) return;
+            reproduciendo = true;
+                const tema = selectorTema.value;
+                const modo = selectorModo.value;
+                for (const frase of temas[tema]) {
+                    if (!reproduciendo) break;
+                    const texto =
+                        modo === "es-en"
+                            ? frase.es
+                            : frase.en;
+                    const idioma =
+                        modo === "es-en"
+                            ? "es-ES"
+                            : "en-US";  
+                    await hablarAsync(texto, idioma);
+                    await esperar(1000);
+                }
+                reproduciendo = false;
+                document.getElementById("playAllBtn").textContent =
+                    "Play All";
+        }
 
         function actualizarNombresTemas() {
             const idioma = selectorModo.value === "es-en" ? "es" : "en";
@@ -1034,6 +1074,9 @@
             
             document.getElementById("mezclarBtn").textContent =
             idioma === "es" ? "Mezclar" : "Shuffle";
+
+            document.getElementById("playAllBtn").textContent =
+            idioma === "es" ? "Escuchar todas" : "Play All";
         }
 
         function mezclarArray(array) {
@@ -1074,6 +1117,10 @@
             });
         }
 
+        function esperar(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }   
+
         actualizarNombresTemas();
         cargarTarjetas();
 
@@ -1088,6 +1135,18 @@
             mezclarArray(temas[tema]);
             cargarTarjetas();
         });
+
+        document.getElementById("playAllBtn").addEventListener("click", () => {
+            const boton = document.getElementById("playAllBtn");
+            if (!reproduciendo) {
+                boton.textContent = "Stop";
+                reproducirTodas();
+            } else {
+                reproduciendo = false;
+                speechSynthesis.cancel();
+                boton.textContent = "Play All";
+            }
+    });
     </script>
 
 </body>
