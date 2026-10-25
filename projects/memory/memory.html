@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Memory - CodeInMind</title>
-    <!--todo revisar que no cambia el idioma y no resetea el contador cuando le das continual-->
+    <!--todo 
+    https://preply.com/es/blog/palabras-mas-usadas-ingles/
+    agregar las palabras y verbos mas usados
+    -->
     
     <style>
         body {
@@ -184,6 +187,8 @@
         <option value="emergencias">Emergencias</option>
         <option value="transporte">Transporte público</option>
         <option value="hogar">Hogar</option>
+        <option value="vocabulario">Vocabulario esencial</option>
+
     </select>
 
     <button id="mezclarBtn">Mezclar</button>
@@ -980,7 +985,11 @@
                 { es: "La ropa ya está lavada", en: "The clothes are already washed" },
                 { es: "La basura ya está fuera", en: "The trash is already out" },
                 { es: "Todo está en orden", en: "Everything is in order" }
+            ],
+            vocabulario: [
+                 { es: "En construcción", en: "Under construction" },
             ]
+
         };
 
         const temasNombres = {
@@ -997,7 +1006,8 @@
                 compras: "Compras",
                 emergencias: "Emergencias",
                 transporte: "Transporte público",
-                hogar: "Hogar"
+                hogar: "Hogar",
+                vocabulario: "Vocabulario esencial"
             },
             en: { 
                 basico: "Common expressions", 
@@ -1012,7 +1022,8 @@
                 compras: "Shopping",
                 emergencias: "Emergencies",
                 transporte: "Public transportation",
-                hogar: "Home"
+                hogar: "Home",
+                vocabulario: "Essential vocabulary"
             }
         };
 
@@ -1116,6 +1127,7 @@
             selectorTema.options[10].text = temasNombres[idioma].emergencias;
             selectorTema.options[11].text = temasNombres[idioma].transporte;
             selectorTema.options[12].text = temasNombres[idioma].hogar;
+            selectorTema.options[13].text = temasNombres[idioma].vocabulario;
             
             document.getElementById("mezclarBtn").textContent =
             idioma === "es" ? "Mezclar" : "Shuffle";
