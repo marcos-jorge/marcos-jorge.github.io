@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Memory - CodeInMind</title>
-
+    <!--todo revisar que no cambia el idioma y no resetea el contador cuando le das continual-->
+    
     <style>
         body {
             background: #000;
@@ -43,8 +44,8 @@
         }
 
         .card {
-            width: 220px;
-            height: 140px;
+            width: 200px;
+            height: 100px;
             perspective: 1000px;
             cursor: pointer;
         }
@@ -82,6 +83,15 @@
         .card-back {
             background: #003300;
             transform: rotateY(180deg);
+        }
+
+        .card.playing {
+            transform: translateY(-5px) scale(1.08);
+        }
+
+        .card.playing .card-face {
+            box-shadow: 0 0 25px #00ff00;
+            border-color: #00ff00;
         }
 
         .menu-item {
@@ -156,8 +166,8 @@
     <h2>Memory Cards</h2>
 
     <select id="modoSelector">
-        <option value="es-en">ES → EN</option>
         <option value="en-es">EN → ES</option>
+        <option value="es-en">ES → EN</option>
     </select>
 
     <select id="temaSelector">
@@ -200,12 +210,12 @@
                 { es: "Estoy genial", en: "I'm great"},
                 { es: "Bueno, para ser honesto", en: "Well, to be honest"},
                 { es: "¿De verdad?, cuéntame más", en: "Really?, tell me more"},
-                { es: "Nací en España", en: "I was born in Spain"},
-                { es: "Crecí en Madrid", en: "I grew up in Madrid"},
+                { es: "Nací en Texas", en: "I was born in Texas"},
+                { es: "Crecí en Londres", en: "I grew up in London"},
                 { es: "Acabo de cumplir 18 años", en: "I just turned 18"},
                 { es: "Soy hijo único", en: "I'm an only child"},
-                { es: "Me gusta jugar al fotbol", en: "I like to play football"},
-                { es: "Soy soltero", en: "I'm singled"},
+                { es: "Me gusta jugar al fútbol", en: "I like to play football"},
+                { es: "Soy soltero", en: "I'm single"},
                 { es: "Estoy comprometido", en: "I'm engaged"},
                 { es: "Estoy casado", en: "I'm married"},
                 { es: "Estoy divorciado", en: "I'm divorced"},
@@ -217,7 +227,7 @@
                 { es: "Estoy muy enfermo", en: "I'm sick as a dog"},
                 { es: "Vienes?", en: "You coming"},
                 { es: "Vamos a terminar por hoy?", en: "Let's call it a day"},
-                { es: "Que me dejes un poco en paz, que me des un poco de cuartelillo", en: "Cut me some slack"},
+                { es: "Que me dejes un poco en paz", en: "Cut me some slack"},
                 { es: "Se está llendo de las manos", en: "This is getting out of hand"},
                 { es: "No te rindas", en: "Hang in there"},
                 { es: "Hablando del rey de roma", en: "Speak of the devil"},
@@ -289,7 +299,7 @@
                 { es: "¿Qué debemos hacer?", en: "What should we do?"},
                 { es: "¿Te gusta?", en: "Do you like it?"},
                 { es: "¿Vas a ir?", en: "Will you go?"},
-                { es: "¿Cuál es mas barato?", en: "Wich one is cheaper?"},
+                { es: "¿Cuál es mas barato?", en: "Which one is cheaper?"},
                 { es: "¿Te gusta la comida picante?", en: "Do you like spicy food?"},
                 { es: "¿Estas cansado?", en: "Are you tired?"},
                 { es: "¿Es dificil/facil?", en: "Is it hard/easy?"},
@@ -308,12 +318,12 @@
                 { es: "¿Tienes algún pasatiempo?", en: "Do you have any hobbies?"},
                 { es: "¿Estás casado?", en: "Are you married?"},
                 { es: "¿A que hora sueles despertarte?", en: "What time do you usually wake up?"},
-                { es: "¿Con qué frecuencia haces ejercicio?", en: "How offen do you exercise?"},
+                { es: "¿Con qué frecuencia haces ejercicio?", en: "How often do you exercise?"},
                 { es: "¿Cómo está el clima hoy?", en: "What's the weather like today?"},
                 { es: "¿Has leído algún buen libro últimamente?", en: "Have you read any good books lately?"},
                 { es: "¿Cual es tu plan para el fin de semana?", en: "What's your plan for the weekend?"},
-                { es: "¿Cómo te sientes hoy?", en: "How are you feeling todoy?"},
-                { es: "¿Todo bien?", en: "What's wrong?"},
+                { es: "¿Cómo te sientes hoy?", en: "How are you feeling today?"},
+                { es: "¿Todo bien?", en: "Is everything OK?"},
                 { es: "¿Qué estás haciendo?", en: "What are you doing?" },
                 { es: "¿Dónde estás ahora?", en: "Where are you right now?" },
                 { es: "¿Qué pasa?", en: "What's going on?" },
@@ -434,7 +444,7 @@
                 { es: "¿Puedo usar tú teléfono?", en: "Can I use your phone?" },       
                 { es: "Estoy acostumbrado a levantarme temprano", en: "I'm used to waking up early." },  
                 { es: "Estoy acostumbrado a hablar inglés en el trabajo.", en: "I'm used to speaking English at work." },
-                { es: "Estoy acostumbrado a conducir.", en: "I'm used to drinking coffee." },
+                { es: "Estoy acostumbrado a conducir.", en: "I'm used to driving." },
                 { es: "No estoy acostumbrado a correr.", en: "I'm not used to running." },
                 { es: "No estoy acostumbrado a este clima frío.", en: "I'm not used to this cold weather." },
                 { es: "No me apetece estudiar hoy.", en: "I don't feel like studying today." },
@@ -457,7 +467,7 @@
                 { es: "Lo que pasa es que he estado muy ocupado.", en: "The thing is that I've been very busy." },
                 { es: "Lo que pasa es que no tengo ganas.", en: "The thing is that I don't feel like it." },
                 { es: "Yo preferiría quedarme en casa esta noche.", en: "I'd rather stay home tonight." },
-                { es: "Yo preferiría ir contigo.", en: "I'd rather go whith you." },
+                { es: "Yo preferiría ir contigo.", en: "I'd rather go with you." },
                 { es: "Yo preferiría quedarme solo.", en: "I would rather stay alone." },
                 { es: "Yo preferiría no ir muy tarde.", en: "I would rather not go too late." },
                 { es: "Yo preferiría no hablar de eso.", en: "I'd rather not talk about it." },
@@ -468,7 +478,7 @@
                 { es: "Estoy a punto de cerrar un trato.", en: "I'm about to close a deal" },
                 { es: "Estoy a punto de terminar mi proyecto.", en: "I'm about to finish my project." },
                 { es: "Díme si necesitas ayuda.", en: "Let me know if you need help." },
-                { es: "Díme si vas a venir.", en: "Let me know if you'ar coming'." },
+                { es: "Díme si vas a venir.", en: "Let me know if you're coming'." },
                 { es: "Díme si lo entendiste.", en: "Let me know if you understood it." },
                 { es: "Díme si necesitas algo más.", en: "Let me know if you need anything else." },
                 { es: "No he tenido tiempo de llamarte.", en: "I haven't had time to call you." },
@@ -1017,6 +1027,7 @@
             speechSynthesis.speak(utter);
         }
         let reproduciendo = false;
+        let indiceActual = 0;
 
         function hablarAsync(text, lang) {
             return new Promise(resolve => {
@@ -1033,27 +1044,60 @@
             });
         }
 
+        
         async function reproducirTodas() {
-        if (reproduciendo) return;
+
+            if (reproduciendo) return;
+
             reproduciendo = true;
-                const tema = selectorTema.value;
-                const modo = selectorModo.value;
-                for (const frase of temas[tema]) {
-                    if (!reproduciendo) break;
-                    const texto =
-                        modo === "es-en"
-                            ? frase.es
-                            : frase.en;
-                    const idioma =
-                        modo === "es-en"
-                            ? "es-ES"
-                            : "en-US";  
-                    await hablarAsync(texto, idioma);
-                    await esperar(1000);
-                }
+
+            const tema = selectorTema.value;
+            const modo = selectorModo.value;
+
+            for (let i = indiceActual; i < temas[tema].length; i++) {
+
+                if (!reproduciendo) break;
+
+                indiceActual = i;
+
+                const frase = temas[tema][i];
+
+                const texto =
+                    modo === "es-en"
+                        ? frase.es
+                        : frase.en;
+
+                const idioma =
+                    modo === "es-en"
+                        ? "es-ES"
+                        : "en-US";
+
+                await hablarAsync(texto, idioma);
+
+                document.querySelectorAll(".card").forEach(card => card.classList.remove("playing"));
+
+                const tarjetaActual = document.querySelector(`.card[data-index="${i}"]`);
+                document.querySelectorAll(".card").forEach(c => c.classList.remove("playing"));
+                if (tarjetaActual) tarjetaActual.classList.add("playing");
+
+                await hablarAsync(texto, idioma);
+                await esperar(1000);
+
+                if (tarjetaActual) tarjetaActual.classList.remove("playing");}
+
                 reproduciendo = false;
-                document.getElementById("playAllBtn").textContent =
-                    "Play All";
+
+                const boton = document.getElementById("playAllBtn");
+
+                if (indiceActual >= temas[tema].length - 1) {
+
+                    indiceActual = 0;
+
+                    boton.textContent =
+                        selectorModo.value === "es-en"
+                            ? "🔊 Escuchar todas"
+                            : "🔊 Play All";
+            }
         }
 
         function actualizarNombresTemas() {
@@ -1077,6 +1121,7 @@
 
             document.getElementById("playAllBtn").textContent =
             idioma === "es" ? "Escuchar todas" : "Play All";
+
         }
 
         function mezclarArray(array) {
@@ -1092,7 +1137,7 @@
 
             cardsContainer.innerHTML = "";
 
-            temas[tema].forEach(frase => {
+            temas[tema].forEach((frase, index) => {
                 const card = document.createElement("div");
                 card.classList.add("card");
 
@@ -1112,7 +1157,7 @@
                         speak(backText, modo === "es-en" ? "en-US" : "es-ES");
                     }
                 });
-
+                card.dataset.index = index;
                 cardsContainer.appendChild(card);
             });
         }
@@ -1124,28 +1169,72 @@
         actualizarNombresTemas();
         cargarTarjetas();
 
-        selectorTema.addEventListener("change", cargarTarjetas);
-        selectorModo.addEventListener("change", () => {
-            actualizarNombresTemas();
+        selectorTema.addEventListener("change", () => {
+
+            reproduciendo = false;
+            indiceActual = 0;
+
+            speechSynthesis.cancel();
+
             cargarTarjetas();
         });
 
         document.getElementById("mezclarBtn").addEventListener("click", () => {
+
             const tema = selectorTema.value;
+
+            reproduciendo = false;
+            indiceActual = 0;
+
+            speechSynthesis.cancel();
+
             mezclarArray(temas[tema]);
             cargarTarjetas();
+        
+            document.getElementById("playAllBtn").textContent =
+                selectorModo.value === "es-en"
+                    ? "Escuchar todas"
+                    : "Play All";
         });
 
         document.getElementById("playAllBtn").addEventListener("click", () => {
-            const boton = document.getElementById("playAllBtn");
-            if (!reproduciendo) {
-                boton.textContent = "Stop";
-                reproducirTodas();
-            } else {
-                reproduciendo = false;
-                speechSynthesis.cancel();
-                boton.textContent = "Play All";
-            }
+
+        const boton = document.getElementById("playAllBtn");
+
+        if (!reproduciendo) {
+
+            boton.textContent =
+                selectorModo.value === "es-en"
+                    ? "⏹ Detener"
+                    : "⏹ Stop";
+
+            reproducirTodas();
+
+        } else {
+
+            reproduciendo = false;
+
+            speechSynthesis.cancel();
+
+            boton.textContent =
+                selectorModo.value === "es-en"
+                    ? "▶ Continuar"
+                    : "▶ Continue";
+        }
+
+    });
+
+    selectorModo.addEventListener("change", () => {
+        // Parar la reproducción y resetear el contador
+        reproduciendo = false;
+        indiceActual = 0;
+        speechSynthesis.cancel();
+
+        // Actualizar textos de temas y botones al nuevo idioma
+        actualizarNombresTemas();
+
+        // Regenerar las tarjetas con el nuevo modo
+        cargarTarjetas();
     });
     </script>
 
