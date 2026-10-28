@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CodeInMind Translator</title>
+<title>CodeInMind Word Translator</title>
 
 <style>
 
@@ -384,7 +384,7 @@ button:active{
 </head>
 <body>
 
-<h2>Translator</h2>
+<h2>Word Translator</h2>
 
 <textarea
     id="entrada"
@@ -423,6 +423,8 @@ const idiomaDestino = 'es';
 const cache = {};
 
 function procesarTexto(){
+
+    detenerAudio(); 
 
     const texto = entrada.value.trim();
 
@@ -567,6 +569,17 @@ function hablarFrase() {
     };
 
     speechSynthesis.speak(u);
+}
+
+function detenerAudio() {
+    estado = "idle";
+    frases = [];
+    indiceFrase = 0;
+
+    speechSynthesis.cancel();
+    speechSynthesis.resume();
+
+    btnPlay.textContent = "PLAY";
 }
 
 btnPlay.addEventListener("click", () => {
