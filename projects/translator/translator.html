@@ -66,6 +66,7 @@ h2 {
     border-bottom: 2px solid #00ff00;
 }
 
+/*
 textarea{
     width:100%;
     min-height:140px;
@@ -90,7 +91,38 @@ textarea:focus{
     border-color:var(--primary);
     box-shadow:var(--shadow);
 }
+    */
+textarea{
+    width:100%;
+    min-height:140px;
 
+    background:#000;
+    color:#00ff00;
+
+    border:3px solid #00ff00;
+
+    padding:12px;
+
+    font-family:"Courier New", monospace;
+    font-size:1rem;
+
+    text-shadow:0 0 4px #00ff00;
+
+    resize:vertical;
+
+    box-sizing:border-box;
+}
+
+textarea:focus{
+    outline:none;
+
+    border-color:#00ff00;
+
+    box-shadow:
+        0 0 10px #00ff00,
+        inset 0 0 8px rgba(0,255,0,0.3);
+}
+/*
 button{
     margin-top:15px;
 
@@ -120,22 +152,75 @@ button:hover{
         0 0 10px rgba(0,212,255,.4),
         0 0 20px rgba(0,212,255,.2);
 }
+*/
+button{
+    margin-top:15px;
 
-#resultado{
-    margin-top:25px;
+    background:rgba(0,20,0,0.6);
 
-    min-height:120px;
+    color:#00ff00;
 
-    background:var(--bg-panel);
+    border:3px solid #00ff00;
 
-    border:1px solid var(--border);
-    border-radius:12px;
+    padding:10px 20px;
 
-    padding:20px;
+    font-family:"Courier New", monospace;
+    font-size:1.1em;
 
-    box-shadow:var(--shadow);
+    text-shadow:0 0 6px #00ff00;
+
+    cursor:pointer;
+
+    transition:all 0.2s ease;
 }
 
+button:hover{
+    background:rgba(0,40,0,0.7);
+
+    box-shadow:0 0 10px #00ff00;
+
+    text-shadow:0 0 10px #00ff00;
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+.botones{
+    margin-top:15px;
+    display:flex;
+    gap:10px;
+    justify-content:flex-start;
+}
+
+.botones button{
+    flex:none;
+    width:auto;
+}
+
+#resultado {
+    margin-top: 20px;
+
+    min-height: 120px;
+
+    border: 3px solid #00ff00;
+
+    background: rgba(0, 20, 0, 0.6);
+
+    color: #00ff00;
+
+    padding: 15px;
+
+    font-family: "Courier New", monospace;
+
+    text-shadow: 0 0 6px #00ff00;
+
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
+
+    animation: crt-flicker 0.25s infinite alternate;
+}
+
+/*
 .word{
     cursor:pointer;
 
@@ -151,7 +236,20 @@ button:hover{
     background:rgba(0,212,255,.15);
     color:#7ae7ff;
 }
+*/
 
+.word {
+    color: #ffffff;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.word:hover {
+    background: rgba(0, 40, 0, 0.7);
+    color: #00ff00;
+    text-shadow: 0 0 8px #00ff00;
+}
+/*
 #translation-box{
     position:absolute;
 
@@ -192,6 +290,50 @@ button:hover{
         transparent
         transparent;
 }
+*/
+
+#translation-box {
+    position: absolute;
+
+    background: rgba(0, 20, 0, 0.95);
+
+    color: #00ff00;
+
+    border: 1px solid #00ff00;
+
+    padding: 8px 12px;
+
+    display: none;
+
+    font-family: "Courier New", monospace;
+
+    /*text-shadow: 0 0 6px #00ff00;*/
+
+   /* box-shadow: 0 0 10px #00ff00;*/
+
+    border-radius: 0;
+
+    z-index: 1000;
+}
+#translation-box::after {
+    content: '';
+
+    position: absolute;
+
+    top: 100%;
+    left: 50%;
+
+    margin-left: -6px;
+
+    border-width: 6px;
+    border-style: solid;
+
+    border-color:
+        #00ff00
+        transparent
+        transparent
+        transparent;
+}
 
 .loading{
     color:var(--text-muted);
@@ -226,9 +368,14 @@ button:hover{
     placeholder="Type your text here..."
 ></textarea>
 
-<button id="btn-procesar">
-    TRANSLATE WORDS
-</button>
+<div class="botones">
+    <button id="btn-procesar">
+        TRANSLATE WORDS
+    </button>
+    <button id="btn-play">
+        PLAY
+    </button>
+</div>
 
 <div id="resultado"></div>
 
@@ -236,8 +383,10 @@ button:hover{
 
 <script>
 
+let reproduciendo = false;
 const entrada = document.getElementById('entrada');
 const btnProcesar = document.getElementById('btn-procesar');
+const btnPlay = document.getElementById('btn-play');
 const resultado = document.getElementById('resultado');
 const cajaTraduccion = document.getElementById('translation-box');
 
@@ -377,6 +526,57 @@ btnProcesar.addEventListener(
     procesarTexto
 );
 
+btnPlay.addEventListener("click", () => {
+
+    speechSynthesis.cancel();
+
+    const texto = resultado.innerText.trim();
+
+    if(!texto) return;
+
+    const voz = new SpeechSynthesisUtterance(texto);
+
+    voz.lang = "en-US";
+    voz.rate = 0.9;
+
+    speechSynthesis.speak(voz);
+});
+
+btnPlay.addEventListener("click", () => {
+
+    if (reproduciendo) {
+
+        speechSynthesis.cancel();
+
+        btnPlay.textContent = "PLAY";
+        reproduciendo = false;
+
+        return;
+    }
+
+    const texto = resultado.innerText.trim();
+
+    if (!texto) return;
+
+    const voz = new SpeechSynthesisUtterance(texto);
+
+    voz.lang = "en-US";
+    voz.rate = 0.9;
+    voz.pitch = 1;
+
+    reproduciendo = true;
+    btnPlay.textContent = "STOP";
+
+    voz.onend = () => {
+
+        reproduciendo = false;
+        btnPlay.textContent = "PLAY";
+
+    };
+
+    speechSynthesis.speak(voz);
+
+});
 </script>
 
 </body>
