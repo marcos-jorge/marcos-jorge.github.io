@@ -335,6 +335,29 @@ button:active{
         transparent;
 }
 
+#translation-panel {
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    min-height: 40px;
+
+    border: 3px solid #00ff00;
+
+    background: rgba(0,20,0,0.6);
+
+    color: #00ff00;
+
+    padding: 15px;
+
+    font-family: "Courier New", monospace;
+
+    text-shadow: 0 0 6px #00ff00;
+
+    animation: crt-flicker 0.25s infinite alternate;
+}
+
+
 .loading{
     color:var(--text-muted);
     font-style:italic;
@@ -377,18 +400,22 @@ button:active{
     </button>
 </div>
 
+<div id="translation-panel">
+    Click a word to see the translation...
+</div>
+
 <div id="resultado"></div>
 
 <div id="translation-box"></div>
 
 <script>
 
-let reproduciendo = false;
 const entrada = document.getElementById('entrada');
 const btnProcesar = document.getElementById('btn-procesar');
 const btnPlay = document.getElementById('btn-play');
 const resultado = document.getElementById('resultado');
 const cajaTraduccion = document.getElementById('translation-box');
+const translationPanel = document.getElementById("translation-panel");
 
 const idiomaOrigen = 'en';
 const idiomaDestino = 'es';
@@ -464,31 +491,22 @@ async function obtenerTraduccion(palabra){
     }
 }
 
-resultado.addEventListener('mouseover', async (e)=>{
+resultado.addEventListener('click', async (e) => {
 
     const span = e.target.closest('.word');
 
-    if(!span) return;
+    if (!span) return;
 
     const palabra = span.dataset.text;
 
-    cajaTraduccion.innerHTML =
-        '<span class="loading">...</span>';
-
-    cajaTraduccion.style.display = 'block';
-
-    const rect = span.getBoundingClientRect();
-
-    cajaTraduccion.style.left =
-        (rect.left + window.scrollX + rect.width / 2) + 'px';
-
-    cajaTraduccion.style.top =
-        (rect.top + window.scrollY - 55) + 'px';
+    translationPanel.innerHTML = "Loading...";
 
     const traduccion =
         await obtenerTraduccion(palabra);
 
-    cajaTraduccion.innerText = traduccion;
+    translationPanel.innerHTML =
+        `<strong>${palabra}</strong> → ${traduccion}`;
+
 });
 
 resultado.addEventListener('mouseout',(e)=>{
@@ -526,41 +544,57 @@ btnProcesar.addEventListener(
     procesarTexto
 );
 
-btnPlay.addEventListener("click", () => {
+let frases = [];
+let indiceFrase = 0;
+let estado = "idle";
 
-    if (reproduciendo) {
-
-        speechSynthesis.cancel();
-
+function hablarFrase() {
+    if (indiceFrase >= frases.length) {
+        estado = "idle";
         btnPlay.textContent = "PLAY";
-        reproduciendo = false;
         return;
     }
 
-    const palabras = document.querySelectorAll("#resultado .word");
+    const u = new SpeechSynthesisUtterance(frases[indiceFrase]);
+    u.lang = "en-US";
+    u.rate = 0.9;
 
-    const texto = [...palabras]
-        .map(p => p.dataset.text)
-        .join(" ");
-
-    if (!texto) return;
-
-    const voz = new SpeechSynthesisUtterance(texto);
-
-    voz.lang = "en-US";
-    voz.rate = 0.9;
-
-    reproduciendo = true;
-    btnPlay.textContent = "STOP";
-
-    voz.onend = () => {
-        reproduciendo = false;
-        btnPlay.textContent = "PLAY";
+    u.onend = () => {
+        if (estado === "playing") {
+            indiceFrase++;
+            hablarFrase();
+        }
     };
 
-    speechSynthesis.speak(voz);
+    speechSynthesis.speak(u);
+}
 
+btnPlay.addEventListener("click", () => {
+
+    if (estado === "playing") {
+        estado = "paused";
+        speechSynthesis.cancel();   // corta la frase actual; indiceFrase se conserva
+        btnPlay.textContent = "CONTINUE";
+        return;
+    }
+
+    if (estado === "paused") {
+        estado = "playing";
+        btnPlay.textContent = "PAUSE";
+        hablarFrase();              // repite la frase donde pausaste
+        return;
+    }
+
+    const texto = resultado.innerText.trim();
+    if (!texto) return;
+
+    frases = texto.match(/[^.!?\n]+[.!?]*/g) || [texto];
+    indiceFrase = 0;
+    estado = "playing";
+    btnPlay.textContent = "PAUSE";
+    hablarFrase();
 });
+
 </script>
 
 </body>
