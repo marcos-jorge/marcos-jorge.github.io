@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeInMind Translator</title>
+
+<style>
+
+/* ===== CODEINMIND THEME ===== */
+
+:root{
+    --bg-main:#0d1117;
+    --bg-panel:#161b22;
+    --bg-hover:#1f2937;
+
+    --primary:#00d4ff;
+    --primary-dark:#0099cc;
+
+    --text:#e6edf3;
+    --text-muted:#9ca3af;
+
+    --border:#30363d;
+
+    --shadow:0 0 15px rgba(0,212,255,.20);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--bg-main);
+    color:var(--text);
+    font-family:Consolas, "Courier New", monospace;
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+    line-height:1.8;
+}
+
+.cim-logo{
+    color:var(--primary);
+    margin-bottom:10px;
+    letter-spacing:2px;
+    font-size:14px;
+}
+
+h1 {
+    color: #00ff00;
+    font-family: "Courier New", monospace;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px #00ff00;
+    border-bottom: 2px solid #00ff00;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #00ff00;
+    font-family: "Courier New", monospace;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px #00ff00;
+    border-bottom: 2px solid #00ff00;
+}
+
+textarea{
+    width:100%;
+    min-height:140px;
+
+    background:var(--bg-panel);
+    color:var(--text);
+
+    border:2px solid var(--border);
+    border-radius:12px;
+
+    padding:15px;
+
+    font-family:inherit;
+    font-size:16px;
+
+    resize:vertical;
+    transition:.25s;
+}
+
+textarea:focus{
+    outline:none;
+    border-color:var(--primary);
+    box-shadow:var(--shadow);
+}
+
+button{
+    margin-top:15px;
+
+    padding:12px 25px;
+
+    border:none;
+    border-radius:10px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:
+        0 0 10px rgba(0,212,255,.4),
+        0 0 20px rgba(0,212,255,.2);
+}
+
+#resultado{
+    margin-top:25px;
+
+    min-height:120px;
+
+    background:var(--bg-panel);
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    padding:20px;
+
+    box-shadow:var(--shadow);
+}
+
+.word{
+    cursor:pointer;
+
+    color:var(--primary);
+
+    padding:3px 5px;
+    border-radius:6px;
+
+    transition:.2s;
+}
+
+.word:hover{
+    background:rgba(0,212,255,.15);
+    color:#7ae7ff;
+}
+
+#translation-box{
+    position:absolute;
+
+    background:var(--bg-panel);
+    color:white;
+
+    border:1px solid var(--primary);
+
+    padding:10px 14px;
+
+    border-radius:10px;
+
+    display:none;
+
+    box-shadow:
+        0 0 10px rgba(0,212,255,.35);
+
+    transform:translateX(-50%);
+    z-index:1000;
+}
+
+#translation-box::after{
+    content:'';
+
+    position:absolute;
+
+    top:100%;
+    left:50%;
+
+    margin-left:-6px;
+
+    border-width:6px;
+    border-style:solid;
+
+    border-color:
+        var(--bg-panel)
+        transparent
+        transparent
+        transparent;
+}
+
+.loading{
+    color:var(--text-muted);
+    font-style:italic;
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:15px;
+    }
+
+    button{
+        width:100%;
+    }
+
+    h1{
+        font-size:24px;
+    }
+
+}
+
+</style>
+
+</head>
+<body>
+
+<h2>Translator</h2>
+
+<textarea
+    id="entrada"
+    placeholder="Type your text here..."
+></textarea>
+
+<button id="btn-procesar">
+    TRANSLATE WORDS
+</button>
+
+<div id="resultado"></div>
+
+<div id="translation-box"></div>
+
+<script>
+
+const entrada = document.getElementById('entrada');
+const btnProcesar = document.getElementById('btn-procesar');
+const resultado = document.getElementById('resultado');
+const cajaTraduccion = document.getElementById('translation-box');
+
+const idiomaOrigen = 'en';
+const idiomaDestino = 'es';
+
+const cache = {};
+
+function procesarTexto(){
+
+    const texto = entrada.value.trim();
+
+    if(!texto){
+        resultado.innerHTML =
+            '<p style="color:#ff6b6b;">Type some text first.</p>';
+        return;
+    }
+
+    const palabras = texto.split(/(\s+)/);
+
+    let html = '';
+
+    palabras.forEach(palabra => {
+
+        if(palabra.trim() === ''){
+            html += palabra;
+        }else{
+            const segura = palabra.replace(/"/g,'&quot;');
+
+            html += `
+                <span
+                    class="word"
+                    data-text="${segura}"
+                >
+                    ${palabra}
+                </span>
+            `;
+        }
+
+    });
+
+    resultado.innerHTML = html;
+}
+
+async function obtenerTraduccion(palabra){
+
+    if(cache[palabra]){
+        return cache[palabra];
+    }
+
+    const url =
+    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${idiomaOrigen}&tl=${idiomaDestino}&dt=t&q=${encodeURIComponent(palabra)}`;
+
+    try{
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if(data && data[0] && data[0][0] && data[0][0][0]){
+
+            const traduccion = data[0][0][0];
+
+            cache[palabra] = traduccion;
+
+            return traduccion;
+        }
+
+        return '(no translation)';
+
+    }catch(error){
+
+        console.error(error);
+
+        return '(network error)';
+    }
+}
+
+resultado.addEventListener('mouseover', async (e)=>{
+
+    const span = e.target.closest('.word');
+
+    if(!span) return;
+
+    const palabra = span.dataset.text;
+
+    cajaTraduccion.innerHTML =
+        '<span class="loading">...</span>';
+
+    cajaTraduccion.style.display = 'block';
+
+    const rect = span.getBoundingClientRect();
+
+    cajaTraduccion.style.left =
+        (rect.left + window.scrollX + rect.width / 2) + 'px';
+
+    cajaTraduccion.style.top =
+        (rect.top + window.scrollY - 55) + 'px';
+
+    const traduccion =
+        await obtenerTraduccion(palabra);
+
+    cajaTraduccion.innerText = traduccion;
+});
+
+resultado.addEventListener('mouseout',(e)=>{
+
+    const span = e.target.closest('.word');
+
+    if(!span) return;
+
+    setTimeout(()=>{
+
+        if(
+            !span.matches(':hover') &&
+            !cajaTraduccion.matches(':hover')
+        ){
+            cajaTraduccion.style.display = 'none';
+        }
+
+    },150);
+
+});
+
+document.addEventListener('click',(e)=>{
+
+    if(
+        !e.target.closest('.word') &&
+        !e.target.closest('#translation-box')
+    ){
+        cajaTraduccion.style.display = 'none';
+    }
+
+});
+
+btnProcesar.addEventListener(
+    'click',
+    procesarTexto
+);
+
+</script>
+
+</body>
+</html>
