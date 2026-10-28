@@ -528,33 +528,20 @@ btnProcesar.addEventListener(
 
 btnPlay.addEventListener("click", () => {
 
-    speechSynthesis.cancel();
-
-    const texto = resultado.innerText.trim();
-
-    if(!texto) return;
-
-    const voz = new SpeechSynthesisUtterance(texto);
-
-    voz.lang = "en-US";
-    voz.rate = 0.9;
-
-    speechSynthesis.speak(voz);
-});
-
-btnPlay.addEventListener("click", () => {
-
     if (reproduciendo) {
 
         speechSynthesis.cancel();
 
         btnPlay.textContent = "PLAY";
         reproduciendo = false;
-
         return;
     }
 
-    const texto = resultado.innerText.trim();
+    const palabras = document.querySelectorAll("#resultado .word");
+
+    const texto = [...palabras]
+        .map(p => p.dataset.text)
+        .join(" ");
 
     if (!texto) return;
 
@@ -562,16 +549,13 @@ btnPlay.addEventListener("click", () => {
 
     voz.lang = "en-US";
     voz.rate = 0.9;
-    voz.pitch = 1;
 
     reproduciendo = true;
     btnPlay.textContent = "STOP";
 
     voz.onend = () => {
-
         reproduciendo = false;
         btnPlay.textContent = "PLAY";
-
     };
 
     speechSynthesis.speak(voz);
