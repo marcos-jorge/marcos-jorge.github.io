@@ -1164,12 +1164,24 @@
                     </div>
                 `;
 
-                card.addEventListener("click", () => {
-                    const flipped = card.classList.toggle("flipped");
-                    if (flipped) {
-                        speak(backText, modo === "es-en" ? "en-US" : "es-ES");
-                    }
-                });
+            card.addEventListener("click", () => {
+                // Idiomas según el modo
+                const idiomaFront = modo === "es-en" ? "es-ES" : "en-US";
+                const idiomaBack  = modo === "es-en" ? "en-US" : "es-ES";
+
+                // Si la tarjeta ya estaba girada, lo visible es el reverso
+                const estabaGirada = card.classList.contains("flipped");
+
+                speechSynthesis.cancel(); // evita que se acumulen audios si tocas rápido
+
+                if (estabaGirada) {
+                    speak(backText, idiomaBack);
+                } else {
+                    speak(frontText, idiomaFront);
+                }
+
+                card.classList.toggle("flipped");
+            });                
                 card.dataset.index = index;
                 cardsContainer.appendChild(card);
             });
