@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeInMind - Pronunciation Practice</title>
+
+<style>
+
+body{
+    background:#000;
+    color:#00ff00;
+    font-family:"Courier New", monospace;
+    max-width:900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+h2{
+    color:#00ff00;
+    border-bottom:2px solid #00ff00;
+    padding-bottom:10px;
+    text-shadow:0 0 8px #00ff00;
+}
+
+textarea{
+    width:100%;
+    min-height:120px;
+    background:#000;
+    color:#00ff00;
+    border:3px solid #00ff00;
+    padding:12px;
+    font-family:"Courier New", monospace;
+    font-size:1rem;
+    resize:vertical;
+    box-sizing:border-box;
+}
+
+textarea:focus{
+    outline:none;
+    box-shadow:
+        0 0 10px #00ff00,
+        inset 0 0 8px rgba(0,255,0,0.3);
+}
+
+.botones{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+
+button{
+    background:rgba(0,20,0,0.6);
+    color:#00ff00;
+    border:3px solid #00ff00;
+    padding:10px 20px;
+    font-family:"Courier New", monospace;
+    font-size:1rem;
+    cursor:pointer;
+}
+
+button:hover{
+    background:rgba(0,40,0,0.8);
+    box-shadow:0 0 10px #00ff00;
+}
+
+#resultado{
+    margin-top:20px;
+    border:3px solid #00ff00;
+    background:rgba(0,20,0,0.6);
+    color:#00ff00;
+    padding:15px;
+    min-height:180px;
+    white-space:pre-wrap;
+}
+
+.correct{
+    color:#00ff00;
+    font-weight:bold;
+}
+
+.medium{
+    color:#ffff00;
+    font-weight:bold;
+}
+
+.bad{
+    color:#ff5555;
+    font-weight:bold;
+}
+
+@media(max-width:768px){
+
+    button{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<h2>Pronunciation Practice</h2>
+
+<textarea
+id="frase"
+placeholder="Type an English sentence here..."></textarea>
+
+<div class="botones">
+    <button id="btn-random">RANDOM</button>
+    <button id="btn-listen">LISTEN</button>
+    <button id="btn-speak">SPEAK</button>
+</div>
+
+<div id="resultado">
+Type a sentence or click RANDOM to start practicing.
+</div>
+
+<script>
+
+const frase = document.getElementById("frase");
+const btnRandom = document.getElementById("btn-random");
+const btnListen = document.getElementById("btn-listen");
+const btnSpeak = document.getElementById("btn-speak");
+const resultado = document.getElementById("resultado");
+
+const randomSentences = [
+
+    // Greetings
+    "How are you today?",
+    "Nice to meet you.",
+    "Have a great day.",
+    "Good morning, how are you?",
+
+    // Travel
+    "Where is the nearest hotel?",
+    "I need a taxi to the airport.",
+    "What time does the train leave?",
+    "Can you show me the way to the station?",
+
+    // Restaurant
+    "Could I see the menu please?",
+    "I would like a cup of coffee.",
+    "Can I have the bill please?",
+    "The food was delicious.",
+
+    // Daily Life
+    "Practice makes perfect.",
+    "Learning English is fun.",
+    "I work as a software developer.",
+    "The weather is beautiful today.",
+
+    // Technology
+    "This is my first program in JavaScript.",
+    "I am building a website with HTML and CSS.",
+    "Programming is a valuable skill.",
+    "I enjoy creating projects with CodeInMind.",
+
+    // Shopping
+    "How much does this cost?",
+    "Do you accept credit cards?",
+    "I am looking for a new laptop.",
+
+    // General
+    "Thank you for your help.",
+    "Can you repeat that please?",
+    "Let's study English together.",
+    "See you tomorrow."
+];
+
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+let recognition = null;
+
+if(SpeechRecognition){
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+
+        const spoken =
+            event.results[0][0].transcript.trim();
+
+        const expected =
+            frase.value.trim();
+
+        const score =
+            similarity(
+                spoken.toLowerCase(),
+                expected.toLowerCase()
+            );
+
+        let clase = "bad";
+        let feedback = "❌ Keep practicing!";
+
+        if(score >= 90){
+            clase = "correct";
+            feedback = "✅ Excellent!";
+        }
+        else if(score >= 70){
+            clase = "medium";
+            feedback = "🟡 Good job!";
+        }
+
+        resultado.innerHTML = `
+<b>YOUR SENTENCE</b>
+
+${expected}
+
+--------------------------------
+
+<b>YOU SAID</b>
+
+${spoken}
+
+--------------------------------
+
+<b>PRONUNCIATION SCORE</b>
+
+<span class="${clase}">${score}%</span>
+
+${feedback}
+`;
+    };
+
+    recognition.onerror = () => {
+
+        resultado.innerHTML =
+            "Microphone error or permission denied.";
+    };
+}
+
+btnRandom.addEventListener("click", () => {
+
+    const index =
+        Math.floor(
+            Math.random() *
+            randomSentences.length
+        );
+
+    frase.value =
+        randomSentences[index];
+
+    resultado.innerHTML =
+        "Random sentence loaded. Press LISTEN or SPEAK.";
+});
+
+btnListen.addEventListener("click", () => {
+
+    const text = frase.value.trim();
+
+    if(!text){
+
+        resultado.innerHTML =
+            "Please type a sentence first.";
+
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const utterance =
+        new SpeechSynthesisUtterance(text);
+
+    utterance.lang = "en-US";
+    utterance.rate = 0.9;
+
+    speechSynthesis.speak(utterance);
+});
+
+btnSpeak.addEventListener("click", () => {
+
+    const text = frase.value.trim();
+
+    if(!text){
+
+        resultado.innerHTML =
+            "Please type a sentence first.";
+
+        return;
+    }
+
+    if(!recognition){
+
+        resultado.innerHTML =
+            "Speech Recognition is not supported in this browser.";
+
+        return;
+    }
+
+    resultado.innerHTML =
+        "🎤 Listening... Please speak now.";
+
+    recognition.start();
+});
+
+function similarity(a,b){
+
+    const distance =
+        levenshtein(a,b);
+
+    const maxLength =
+        Math.max(a.length,b.length);
+
+    if(maxLength === 0){
+        return 100;
+    }
+
+    return Math.round(
+        (1 - distance / maxLength) * 100
+    );
+}
+
+function levenshtein(a,b){
+
+    const matrix = [];
+
+    for(let i = 0; i <= b.length; i++){
+        matrix[i] = [i];
+    }
+
+    for(let j = 0; j <= a.length; j++){
+        matrix[0][j] = j;
+    }
+
+    for(let i = 1; i <= b.length; i++){
+
+        for(let j = 1; j <= a.length; j++){
+
+            if(
+                b.charAt(i - 1) ===
+                a.charAt(j - 1)
+            ){
+
+                matrix[i][j] =
+                    matrix[i - 1][j - 1];
+
+            }else{
+
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
+}
+
+</script>
+
+</body>
+</html>

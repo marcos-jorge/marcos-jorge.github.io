@@ -1530,7 +1530,7 @@
                 transporte: "Transporte público",
                 hogar: "Hogar",
                 vocabulario: "Vocabulario esencial",
-                dialogos: "Diálogos"
+                dialogos: "Diálogos",
             },
             en: { 
                 basico: "Common expressions", 
@@ -1547,7 +1547,7 @@
                 transporte: "Public transportation",
                 hogar: "Home",
                 vocabulario: "Essential vocabulary",
-                dialogos: "Dialogues"
+                dialogos: "Dialogues",
             }
         };
 
@@ -1790,3 +1790,84 @@
 
 </body>
 </html>
+
+<!--
+
+<button id="speakBtn">
+  Speak
+</button>
+
+<div id="result"></div>
+
+<script>
+const phrase =
+  "I would like a cup of coffee";
+
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+const recognition =
+  new SpeechRecognition();
+
+recognition.lang = "en-US";
+
+document
+  .getElementById("speakBtn")
+  .addEventListener("click", () => {
+    recognition.start();
+  });
+
+recognition.onresult = (event) => {
+
+  const spoken =
+    event.results[0][0].transcript;
+
+  document.getElementById(
+    "result"
+  ).innerHTML = `
+    <b>Expected:</b><br>
+    ${phrase}<br><br>
+
+    <b>You said:</b><br>
+    ${spoken}
+  `;
+};
+</script>
+function getAccuracy(
+  expected,
+  spoken
+) {
+  const expWords =
+    expected.toLowerCase().split(" ");
+
+  const spkWords =
+    spoken.toLowerCase().split(" ");
+
+  let match = 0;
+
+  expWords.forEach(word => {
+    if (spkWords.includes(word)) {
+      match++;
+    }
+  });
+
+  return Math.round(
+    (match / expWords.length) * 100
+  );
+}
+  const score =
+  getAccuracy(
+    phrase,
+    spoken
+  );
+
+console.log(score + "%");
+Mostrar frase en inglés.
+Botón ▶ Listen.
+Botón 🎤 Repeat.
+Mostrar:
+Lo que dijo el usuario.
+Porcentaje.
+Palabras incorrectas.
+-->
