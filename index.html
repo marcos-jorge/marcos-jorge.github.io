@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeInMind</title>
-
     <style>
         body {
             font-family: "Courier New", monospace;
@@ -294,7 +293,7 @@
     </div>
 </div>
 
-    <footer class="creditos">CodeInMind v1.12 :: Created by Marcos Varela & Bruno Varela</footer>
+    <footer class="creditos">CodeInMind v1.13 :: Created by Marcos Varela & Bruno Varela</footer>
 	
     <script>
         // Efecto de escritura para cada línea del menú
@@ -318,9 +317,6 @@
         const contactLink = document.getElementById("contactLink");
         const contactPrompt = document.getElementById("contactPrompt");
 
-        //const closeBtn = document.querySelector(".close-btn");
-        //const contactCloseBtn = document.querySelector(".close-btn");
-
         aboutLink.addEventListener("click", () => {
             aboutPrompt.style.display = "flex";
         });
@@ -329,21 +325,11 @@
             contactPrompt.style.display = "flex";
         });
 
-        /*    
-        closeBtn.addEventListener("click", () => {
-            aboutPrompt.style.display = "none";
-        });
-               contactCloseBtn.addEventListener("click", () => {
-            contactPrompt.style.display = "none";
-        });
-        */
-
         document.querySelectorAll(".close-btn").forEach(btn => {
             btn.addEventListener("click", () => {
             btn.closest(".prompt-overlay").style.display = "none";
             });
         });
-
 
     </script>
 
