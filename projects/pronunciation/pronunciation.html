@@ -112,6 +112,9 @@ placeholder="Type an English sentence here..."></textarea>
     <button id="btn-random">RANDOM</button>
     <button id="btn-listen">LISTEN</button>
     <button id="btn-speak">SPEAK</button>
+    <button id="btn-dictate-es">DICTATE ES</button>
+    <button id="btn-translate">TRANSLATE</button>
+    <button id="btn-dictate-en">DICTATE EN</button>
 </div>
 
 <div id="resultado">
@@ -125,6 +128,8 @@ const btnRandom = document.getElementById("btn-random");
 const btnListen = document.getElementById("btn-listen");
 const btnSpeak = document.getElementById("btn-speak");
 const resultado = document.getElementById("resultado");
+const btnDictateES = document.getElementById("btn-dictate-es");
+const btnDictateEN = document.getElementById("btn-dictate-en");
 
 const randomSentences = [
 
@@ -170,14 +175,77 @@ const randomSentences = [
     "See you tomorrow."
 ];
 
+const btnTranslate =
+    document.getElementById("btn-translate");
+
+/*
+btnTranslate.addEventListener("click", () => {
+    const text = frase.value.trim();
+    if(!text){
+
+        resultado.innerHTML =
+            "Please dictate or type a sentence first.";
+
+        return;
+    }
+    const url =
+        `https://translate.google.com/?sl=es&tl=en&text=${encodeURIComponent(text)}&op=translate`;
+
+    window.open(url, "_blank");
+});
+*/
+
+btnTranslate.addEventListener("click", async () => {
+
+    const text = frase.value.trim();
+
+    if (!text) {
+        resultado.innerHTML =
+            "Please dictate a sentence first.";
+        return;
+    }
+
+    resultado.innerHTML =
+        "🔄 Translating...";
+
+    try {
+
+        const response = await fetch(
+            `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=es|en`
+        );
+
+        console.log(response);
+
+        const data = await response.json();
+
+        console.log(data);
+
+        frase.value =
+            data.responseData.translatedText;
+
+        resultado.innerHTML =
+            "✅ Translation completed.";
+
+    } catch (error) {
+
+        console.error(error);
+
+        resultado.innerHTML =
+            "❌ Translation error: " + error.message;
+    }
+});
+
 const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
 let recognition = null;
+let dictationES = null;
+let dictationEN = null;
 
-if(SpeechRecognition){
+if (SpeechRecognition) {
 
+    // Pronunciation checker
     recognition = new SpeechRecognition();
 
     recognition.lang = "en-US";
@@ -231,12 +299,60 @@ ${feedback}
 `;
     };
 
-    recognition.onerror = () => {
+    // Dictado español
+    dictationES = new SpeechRecognition();
+
+    dictationES.lang = "es-ES";
+    dictationES.interimResults = false;
+    dictationES.maxAlternatives = 1;
+
+    dictationES.onresult = (event) => {
+
+        const text =
+            event.results[0][0].transcript.trim();
+
+        frase.value = text;
+
+        resultado.innerHTML = `
+<b>SPANISH DICTATION</b>
+
+${text}
+`;
+    };
+
+    // Dictado inglés
+    dictationEN = new SpeechRecognition();
+
+    dictationEN.lang = "en-US";
+    dictationEN.interimResults = false;
+    dictationEN.maxAlternatives = 1;
+
+    dictationEN.onresult = (event) => {
+
+        const text =
+            event.results[0][0].transcript.trim();
+
+        frase.value = text;
+
+        resultado.innerHTML = `
+<b>ENGLISH DICTATION</b>
+
+${text}
+`;
+    };
+
+    const errorHandler = () => {
 
         resultado.innerHTML =
             "Microphone error or permission denied.";
     };
+
+    recognition.onerror = errorHandler;
+    dictationES.onerror = errorHandler;
+    dictationEN.onerror = errorHandler;
 }
+
+//*******************************************************
 
 btnRandom.addEventListener("click", () => {
 
@@ -356,6 +472,39 @@ function levenshtein(a,b){
 
     return matrix[b.length][a.length];
 }
+
+btnDictateES.addEventListener("click", () => {
+
+    if(!dictationES){
+
+        resultado.innerHTML =
+            "Speech Recognition is not supported in this browser.";
+
+        return;
+    }
+
+    resultado.innerHTML =
+        "🎤 Habla en español...";
+
+    dictationES.start();
+});
+
+
+btnDictateEN.addEventListener("click", () => {
+
+    if(!dictationEN){
+
+        resultado.innerHTML =
+            "Speech Recognition is not supported in this browser.";
+
+        return;
+    }
+
+    resultado.innerHTML =
+        "🎤 Speak in English...";
+
+    dictationEN.start();
+});
 
 </script>
 
